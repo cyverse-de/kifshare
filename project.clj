@@ -38,14 +38,18 @@
                  [de.ubercode.clostache/clostache "1.4.0"]
                  [com.cemerick/url "0.1.1"]]
 
+  :eastwood {:exclude-namespaces [:test-paths]
+             :linters [:wrong-arity :wrong-ns-form :wrong-pre-post :wrong-tag :misplaced-docstrings]}
+
   :ring {:init kifshare.config/init
          :handler kifshare.core/app}
 
-  :profiles {:dev     {:resource-paths ["build" "conf"]
+  :profiles {:dev     {:resource-paths ["build" "conf" "dev-resources"]
                        :dependencies [[midje "1.6.3"]]
                        :plugins [[lein-midje "2.0.1"]]}
              :uberjar {:aot :all}}
 
-  :plugins [[lein-ring "0.7.5"]]
+  :plugins [[jonase/eastwood "0.2.3"]
+            [lein-ring "0.7.5"]]
 
   :main ^:skip-aot kifshare.core)

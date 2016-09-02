@@ -51,10 +51,10 @@
      {:status 404 :body (ticket-not-found)}
 
      (= err-code ERR_TICKET_EXPIRED)
-     {:status 410 :body (ticket-expired err-map)}
+     {:status 410 :body (ticket-expired)}
 
      (= err-code ERR_TICKET_USED_UP)
-     {:status 410 :body (ticket-used-up err-map)}
+     {:status 410 :body (ticket-used-up)}
 
      :else
      {:status 500 :body (default-error err-map)})))
