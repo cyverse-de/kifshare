@@ -6,29 +6,42 @@
             [clojure-commons.error-codes :as ce]
             [clojure.tools.logging :as log]))
 
+(def default-css-files
+  "resources/css/reset.css,
+   resources/css/960.css,
+   https://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.8.2/css/jquery.dataTables.css,
+   resources/css/jquery-ui-1.8.21.custom.css,
+   resources/css/kif.css")
+
+(def default-javascript-files
+  "https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js,
+   https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js,
+   https://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.8.2/jquery.dataTables.min.js,
+   https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.7.0/mustache.min.js,
+   https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js,
+   resources/js/jquery.tooltip.min.js,
+   resources/js/jquery.zclip.min.js,
+   resources/js/json2.js,
+   resources/js/kif.js")
+
 (def props (atom nil))
 
 (def robots-txt (atom ""))
 
 (defn robots-txt-path
   []
-  (get @props "kifshare.app.robots-txt"))
-
-(defn service-name
-  []
-  (get @props "kifshare.app.service-name"))
-
-(defn service-version
-  []
-  (get @props "kifshare.app.service-version"))
+  (or (get @props "kifshare.app.robots-txt")
+      "robots.txt"))
 
 (defn client-cache-scope
   []
-  (get @props "kifshare.app.client-cache-scope"))
+  (or (get @props "kifshare.app.client-cache-scope")
+      "public"))
 
 (defn client-cache-max-age
   []
-  (get @props "kifshare.app.client-cache-max-age"))
+  (or (get @props "kifshare.app.client-cache-max-age")
+      "604800"))
 
 (defn robots-txt-content
   []
@@ -41,23 +54,28 @@
 
 (defn resources-root
   []
-  (get @props "kifshare.app.resources-root"))
+  (or (get @props "kifshare.app.resources-root")
+      "/resources"))
 
 (defn js-dir
   []
-  (get @props "kifshare.app.js-dir"))
+  (or (get @props "kifshare.app.js-dir")
+      "js"))
 
 (defn img-dir
   []
-  (get @props "kifshare.app.images-dir"))
+  (or (get @props "kifshare.app.images-dir")
+      "img"))
 
 (defn css-dir
   []
-  (get @props "kifshare.app.css-dir"))
+  (or (get @props "kifshare.app.css-dir")
+      "css"))
 
 (defn flash-dir
   []
-  (get @props "kifshare.app.flash-dir"))
+  (or (get @props "kifshare.app.flash-dir")
+      "flash"))
 
 (defn de-url
   []
@@ -69,15 +87,18 @@
 
 (defn logo-path
   []
-  (get @props "kifshare.app.logo-path"))
+  (or (get @props "kifshare.app.logo-path")
+      "resources/img/logo.png"))
 
 (defn favicon-path
   []
-  (get @props "kifshare.app.favicon-path"))
+  (or (get @props "kifshare.app.favicon-path")
+      "resources/img/logo.ico"))
 
 (defn de-import-flags
   []
-  (get @props "kifshare.app.de-import-flags"))
+  (or (get @props "kifshare.app.de-import-flags")
+      "{{url}}/d/{{ticket-id}}/{{filename}}"))
 
 (defn footer-text
   []
@@ -85,20 +106,47 @@
 
 (defn curl-flags
   []
-  (get @props "kifshare.app.curl-flags"))
+  (or (get @props "kifshare.app.curl-flags")
+      "curl -o '{{filename}}' '{{url}}/d/{{ticket-id}}/{{filename}}'"))
 
 (defn wget-flags
   []
-  (get @props "kifshare.app.wget-flags"))
+  (or (get @props "kifshare.app.wget-flags")
+      "wget '{{url}}/d/{{ticket-id}}/{{filename}}'"))
 
 (defn iget-flags
   []
-  (get @props "kifshare.app.iget-flags"))
+  (or (get @props "kifshare.app.iget-flags")
+      "iget -t {{ticket-id}} '{{abspath}}'"))
 
 (defn username
   []
   (or (get @props "kifshare.irods.user")
       "public"))
+
+(defn irods-host
+  []
+  (or (get @props "kifshare.irods.host") "irods"))
+
+(defn irods-port
+  []
+  (or (get @props "kifshare.irods.port") "1247"))
+
+(defn irods-password
+  []
+  (or (get @props "kifshare.irods.password") "notprod"))
+
+(defn irods-home
+  []
+  (or (get @props "kifshare.irods.home") "/iplant/home"))
+
+(defn irods-zone
+  []
+  (or (get @props "kifshare.irods.zone") "iplant"))
+
+(defn irods-default-resource
+  []
+  (or (get @props "kifshare.irods.defaultResource") ""))
 
 (def jgcfg (atom nil))
 
@@ -108,20 +156,20 @@
   []
   (reset! jgcfg
           (jinit/init
-           (get @props "kifshare.irods.host")
-           (get @props "kifshare.irods.port")
-           (get @props "kifshare.irods.user")
-           (get @props "kifshare.irods.password")
-           (get @props "kifshare.irods.home")
-           (get @props "kifshare.irods.zone")
-           (get @props "kifshare.irods.defaultResource"))))
+           (irods-host)
+           (irods-port)
+           (username)
+           (irods-password)
+           (irods-home)
+           (irods-zone)
+           (irods-default-resource))))
 
 (defn css-files
   []
   (mapv
     string/trim
     (string/split
-      (get @props "kifshare.app.css-files")
+      (or (get @props "kifshare.app.css-files") default-css-files)
       #",")))
 
 (defn javascript-files
@@ -129,14 +177,13 @@
   (mapv
     string/trim
     (string/split
-      (get @props "kifshare.app.javascript-files")
+      (or (get @props "kifshare.app.javascript-files") default-javascript-files)
       #",")))
 
 (defn- exception-filters
   []
   (mapv #(re-pattern (str %))
-        [(get @props "kifshare.irods.user")
-         (get @props "kifshare.irods.password")]))
+        [(username) (irods-password)]))
 
 (defn register-exception-filters
   []
