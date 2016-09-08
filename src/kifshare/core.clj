@@ -92,7 +92,7 @@
 (def svc-info
   {:desc "Service that serves up public files from iRODS."
    :app-name "kifshare"
-   :group-id "org.iplantc"
+   :group-id "org.cyverse"
    :art-id "kifshare"
    :service "kifshare"})
 

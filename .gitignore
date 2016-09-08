@@ -10,6 +10,8 @@ bin
 \#*\#
 data-info.log
 target/
+node_modules/
+build/
 .settings/
 .DS_Store
 .nrepl-port

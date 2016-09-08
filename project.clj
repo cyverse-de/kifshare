@@ -7,9 +7,9 @@
       (string/trim (:out (sh "git" "rev-parse" "HEAD")))
       ""))
 
-(defproject org.iplantc/kifshare "5.2.8.0"
+(defproject org.cyverse/kifshare "2.8.1-SNAPSHOT"
   :description "CyVerse Quickshare for iRODS"
-  :url "https://github.com/cyverse/DE"
+  :url "https://github.com/cyverse-de/kifshare"
 
   :license {:name "BSD"
             :url "http://cyverse.org/sites/default/files/iPLANT-LICENSE.txt"}
@@ -20,12 +20,12 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/tools.logging "0.3.1"]
                  [medley "0.5.5"]
-                 [org.iplantc/clj-jargon "5.2.8.0"
+                 [org.cyverse/clj-jargon "2.8.0"
                    :exclusions [[org.slf4j/slf4j-log4j12]
                                 [log4j]]]
-                 [org.iplantc/service-logging "5.2.8.0"]
-                 [org.iplantc/clojure-commons "5.2.8.0"]
-                 [org.iplantc/common-cli "5.2.8.0"]
+                 [org.cyverse/service-logging "2.8.0"]
+                 [org.cyverse/clojure-commons "2.8.0"]
+                 [org.cyverse/common-cli "2.8.0"]
                  [me.raynes/fs "1.4.6"]
                  [cheshire "5.5.0"
                    :exclusions [[com.fasterxml.jackson.dataformat/jackson-dataformat-cbor]
