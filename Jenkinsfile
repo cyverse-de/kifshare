@@ -1,3 +1,4 @@
+#!groovy
 def repo = "kifshare"
 def dockerUser = "discoenv"
 
