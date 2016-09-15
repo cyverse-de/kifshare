@@ -9,8 +9,9 @@ RUN npm install -g grunt-cli
 
 ARG git_commit=unknown
 ARG version=unknown
-LABEL org.iplantc.de.kifshare.git-ref="$git_commit" \
-      org.iplantc.de.kifshare.version="$version"
+
+LABEL org.cyverse.git-ref="$git_commit"
+LABEL org.cyverse.version="$version"
 
 COPY . /usr/src/app
 COPY conf/main/logback.xml /usr/src/app/logback.xml
