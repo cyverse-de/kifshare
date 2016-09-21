@@ -44,12 +44,11 @@
   :ring {:init kifshare.config/init
          :handler kifshare.core/app}
 
-  :profiles {:dev     {:resource-paths ["build" "conf" "dev-resources"]
-                       :dependencies [[midje "1.6.3"]]
-                       :plugins [[lein-midje "2.0.1"]]}
+  :profiles {:dev     {:resource-paths ["build" "conf" "dev-resources"]}
              :uberjar {:aot :all}}
 
   :plugins [[jonase/eastwood "0.2.3"]
+            [test2junit "1.2.2"]
             [lein-ring "0.7.5"]]
 
   :main ^:skip-aot kifshare.core)

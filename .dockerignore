@@ -15,4 +15,7 @@ build/
 .settings/
 .DS_Store
 .nrepl-port
+.*.swp
+build.xml
+test2junit
 Jenkinsfile
