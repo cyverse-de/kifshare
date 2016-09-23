@@ -19,3 +19,4 @@ build/
 build.xml
 test2junit
 Jenkinsfile
+service.properties
