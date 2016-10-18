@@ -26,6 +26,8 @@
                  [org.cyverse/service-logging "2.8.0"]
                  [org.cyverse/clojure-commons "2.8.0"]
                  [org.cyverse/common-cli "2.8.0"]
+                 [org.cyverse/event-messages "0.0.1"]
+                 [com.novemberain/langohr "3.5.1"]
                  [me.raynes/fs "1.4.6"]
                  [cheshire "5.5.0"
                    :exclusions [[com.fasterxml.jackson.dataformat/jackson-dataformat-cbor]

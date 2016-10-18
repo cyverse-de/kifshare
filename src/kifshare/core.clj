@@ -14,6 +14,8 @@
             [ring.util.http-response :as http-resp]
             [kifshare.config :as cfg]
             [kifshare.controllers :as controllers]
+            [kifshare.amqp :as amqp]
+            [kifshare.events :as events]
             [clojure.string :as string]
             [common-cli.core :as ccli]
             [me.raynes.fs :as fs]
@@ -126,6 +128,12 @@
   (or (:buffer-size opts)
       (* 1024 (Integer/parseInt (get @cfg/props "kifshare.app.download-buffer-size")))))
 
+(defn listen-for-events
+  []
+  (let [exchange-cfg (events/exchange-config)
+        queue-cfg    (events/queue-config)]
+    (amqp/connect exchange-cfg queue-cfg {"events.kifshare.ping" events/ping-handler})))
+
 (defn -main
   [& args]
   (tc/with-logging-context svc-info
@@ -137,6 +145,7 @@
       (cfg/local-init (:config options))
       (cfg/jargon-init)
       (cfg/log-config)
+      (.start (Thread. listen-for-events))
       (with-redefs [clojure.java.io/buffer-size override-buffer-size]
         (let [port (Integer/parseInt (string/trim (get @cfg/props "kifshare.app.port")))]
           (log/warn "Configured listen port is: " port)
