@@ -45,12 +45,12 @@
     }
 
     function enableCopy(wrapperId, selectionId) {
-      var wrapperElement = document.getElementById(wrapperId);
-      var selectionElement = document.getElementById(selectionId);
-      wrapperElement.addEventListener('click', function(event) {
-        selectionElement.select();
-        document.execCommand('copy');
-      });
+        var wrapperElement = document.getElementById(wrapperId),
+            selectionElement = document.getElementById(selectionId);
+        wrapperElement.addEventListener('click', function() {
+            selectionElement.select();
+            document.execCommand('copy');
+        });
     }
 
     $(document).ready(function() {
