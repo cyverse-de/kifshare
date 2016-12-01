@@ -22,8 +22,6 @@ module.exports = function(grunt) {
           '$',
           'Mustache',
           '_',
-          'ZeroClipboard',
-          'zclip',
           'alert',
           'window'
         ]
@@ -154,8 +152,6 @@ module.exports = function(grunt) {
         $:true,
         Mustache: true,
         _: true,
-        ZeroClipboard: true,
-        zclip: true,
         alert: true
       }
     },
