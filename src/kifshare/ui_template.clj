@@ -1,7 +1,4 @@
 (ns kifshare.ui-template
-  (:use [hiccup.core]
-        [hiccup.page :only [include-css include-js html5]]
-        [kifshare.common :only [layout]])
   (:require [kifshare.config :as cfg]
             [clostache.parser :as prs]
             [clojure.tools.logging :as log]
