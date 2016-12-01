@@ -1,11 +1,11 @@
 <html>
   <head>
     <title>{{{filename}}}</title>
-    <link href="resources/css/reset.css" rel="stylesheet" type="text/css">
-    <link href="resources/css/960.css" rel="stylesheet" type="text/css">
-    <link href="https://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.8.2/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
-    <link href="resources/css/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css">
-    <link href="resources/css/kif.css" rel="stylesheet" type="text/css">
+    <link href="resources/css/reset.css" rel="stylesheet" type="text/css" />
+    <link href="resources/css/960.css" rel="stylesheet" type="text/css" />
+    <link href="https://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.8.2/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+    <link href="resources/css/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
+    <link href="resources/css/kif.css" rel="stylesheet" type="text/css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js" type="text/javascript"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.8.2/jquery.dataTables.min.js" type="text/javascript"></script>
@@ -18,6 +18,10 @@
   </head>
 
   <body>
+    <span id="ticket-info" style="display: none">
+      <div id="ticket-info-map">{{{ticket-info-json}}}</div>
+    </span>
+
     <div id="menu">
       <ul>
         <li>
@@ -81,7 +85,7 @@
         <div id="de-import-instructions">
           <div id="de-import-instructions-label">
             <h2 title="Discovery Environment Import URL">
-              <a href="{{{de-url}}}">DE Import URL</a> ":"
+              <a href="{{{de-url}}}">DE Import URL:</a>
             </h2>
           </div>
 
@@ -96,7 +100,7 @@
         <div id="irods-instructions">
           <div id="irods-instructions-label">
             <h2 title="IRODS icommands">
-              <a href="{{{irods-url}}}">iRODS icommands</a> ":"
+              <a href="{{{irods-url}}}">iRODS icommands:</a>
             </h2>
           </div>
 

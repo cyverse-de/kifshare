@@ -22,6 +22,8 @@ RUN npm install && \
     cp -r build/* resources/ && \
     cp target/kifshare-standalone.jar .
 
+COPY ui/ui.xml resources/ui.xml
+
 RUN ln -s "/usr/bin/java" "/bin/kifshare"
 
 ENTRYPOINT ["kifshare", "-Dlogback.configurationFile=/etc/iplant/de/logging/kifshare-logging.xml", "-cp", ".:resources:kifshare-standalone.jar", "kifshare.core"]

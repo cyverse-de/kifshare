@@ -52,7 +52,7 @@
   (GET "/resources/css/:rsc-name"
        [rsc-name]
        (let [resource-root (ft/path-join (cfg/resources-root) (cfg/css-dir))]
-         (static-resp rsc-name :root resource-root)))
+         (resp/content-type (static-resp rsc-name :root resource-root) "text/css")))
 
   (GET "/resources/js/:rsc-name"
        [rsc-name]
