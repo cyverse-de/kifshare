@@ -16,10 +16,12 @@
             [kifshare.controllers :as controllers]
             [kifshare.amqp :as amqp]
             [kifshare.events :as events]
+            [kifshare.ui-template :as ui]
             [clojure.string :as string]
             [common-cli.core :as ccli]
             [me.raynes.fs :as fs]
-            [service-logging.thread-context :as tc]))
+            [service-logging.thread-context :as tc]
+            [hawk.core :as hawk]))
 
 (defn keep-alive
   [resp]
@@ -148,6 +150,12 @@
       (.start (Thread. listen-for-events))
       (with-redefs [clojure.java.io/buffer-size override-buffer-size]
         (let [port (Integer/parseInt (string/trim (get @cfg/props "kifshare.app.port")))]
+          (ui/read-template)
+          (hawk/watch! {:watcher :polling}
+                       [{:paths ["resources/ui.xml"]
+                         :handler (fn [ctx e]
+                                    (when (= (:kind e) :modify)
+                                      (ui/read-template)))}])
           (log/warn "Configured listen port is: " port)
           (require 'ring.adapter.jetty)
           ((eval 'ring.adapter.jetty/run-jetty) app {:port port}))))))

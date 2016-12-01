@@ -5,12 +5,12 @@
             [cheshire.core :as json])
   (:import [org.apache.commons.io FileUtils]))
 
+(def tmpl (ref ""))
+
 (defn read-template
   []
-  (slurp "resources/ui.xml"))
-
-(def memo-read-template
-  (memoize read-template))
+  (dosync
+    (ref-set tmpl (slurp "resources/ui.xml"))))
 
 (defn ui-ticket-info
   [ticket-info]
@@ -23,7 +23,7 @@
 (defn landing-page
   [ticket-id metadata ticket-info]
   (log/debug "entered kifshare.ui-template/landing-page")
-  (prs/render (memo-read-template)
+  (prs/render @tmpl
               (assoc ticket-info
                      :metadata metadata
                      :filesize (FileUtils/byteCountToDisplaySize
