@@ -16,11 +16,11 @@ COPY conf/main/logback.xml /usr/src/app/
 COPY . /usr/src/app
 
 
-RUN npm install && \
-    grunt build-resources && \
-    lein uberjar && \
-    cp -r build/* resources/ && \
-    cp target/kifshare-standalone.jar .
+RUN npm install
+RUN grunt build-resources
+RUN cp -r build/* resources/
+RUN lein uberjar
+RUN cp target/kifshare-standalone.jar .
 
 COPY ui/ui.xml resources/ui.xml
 
