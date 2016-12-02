@@ -66,13 +66,6 @@ module.exports = function(grunt) {
             {
               expand: true,
               flatten: true,
-              cwd: 'ui/src/flash/',
-              src: ['*'],
-              dest: "build/public/flash/"
-            },
-            {
-              expand: true,
-              flatten: true,
               cwd: 'ui/src/img',
               src: ['*'],
               dest: "build/public/img/"
@@ -83,6 +76,13 @@ module.exports = function(grunt) {
               cwd: 'ui/src',
               src: ["robots.txt"],
               dest: "build/public/"
+            },
+            {
+              expand: true,
+              flatten: true,
+              cwd: 'ui/fa',
+              src: ['*'],
+              dest: "build/public/fa"
             }
         ]
       },
