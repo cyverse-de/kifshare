@@ -51,6 +51,16 @@
        [rsc-name]
        (static-resp rsc-name))
 
+  (GET "/resources/fa/css/:rsc-name"
+       [rsc-name]
+       (let [resource-root (ft/path-join (cfg/resources-root) "fa/css")]
+         (resp/content-type (static-resp rsc-name :root resource-root) "text/css")))
+
+  (GET "/resources/fa/fonts/:rsc-name"
+       [rsc-name]
+       (let [resource-root (ft/path-join (cfg/resources-root) "fa/fonts")]
+         (static-resp rsc-name :root resource-root)))
+
   (GET "/resources/css/:rsc-name"
        [rsc-name]
        (let [resource-root (ft/path-join (cfg/resources-root) (cfg/css-dir))]
