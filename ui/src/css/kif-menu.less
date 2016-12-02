@@ -54,37 +54,29 @@
                 a {
                     .menu-content;
                     text-decoration: none;
+
                     #download-link-area {
+                        text-align: center;
+                        height: 50px;
+                        width: 50px;
+                        float: right;
+                        margin-right: 10px;
+                        color: @download-text-color;
+                        display: block;
+                        background: @download-button-color;
+                        border-radius: 50%;
+
+                        i {
+                            margin-top: 10px;
+                        }
+
                         &:hover {
-                            .gradient(
-                                lighten(@download-button-color-start, 10%),
-                                lighten(@download-button-color-start, 10%),
-                                lighten(@download-button-color-stop, 10%)
-                            );
+                            background-color: lighten(@download-button-color, 10%);
                         };
+
                         &:active {
                             .inner-shadow(2px, 4px, 6px, 0.5);
                         };
-                        display: block;
-                        .gradient(
-                            @download-button-color-start,
-                            @download-button-color-start,
-                            @download-button-color-stop
-                        );
-                        //background: @download-button-color;
-                        color: @download-text-color;
-                        .bordered(
-                            darken(@download-button-color-start, 33%),
-                            darken(@download-button-color-start, 33%),
-                            darken(@download-button-color-start, 33%),
-                            darken(@download-button-color-start, 33%)
-                        );
-                        .rounded(10px);
-                        text-align: center;
-                        height: 50px;
-                        width: @download-button-width;
-                        float: right;
-                        margin-right: 10px;
                     }
                 }
 
