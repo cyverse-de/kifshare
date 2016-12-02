@@ -88,10 +88,13 @@
 #download-button-display {
   .button-settings;
   background-color: @download-button-color;
-  .drop-shadow(0px, 2px, 10px, 0.5);
+  border-color: black;
+  border-width: medium;
+  border-style: solid;
+  .drop-shadow(5px, 5px, 5px, 0.5);
 
   &:hover {
-    background-color: lighten(@download-button-color, 10%);
+    background-color: darken(@download-button-color, 10%);
   };
 
   &:active {
@@ -104,7 +107,7 @@
   color: black;
 
   i {
-    margin-top: 35px;
+    margin-top: 14px;
   }
 }
 

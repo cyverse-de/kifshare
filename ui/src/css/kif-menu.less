@@ -57,21 +57,24 @@
 
                     #download-link-area {
                         text-align: center;
-                        height: 50px;
-                        width: 50px;
+                        height: 45px;
+                        width: 45px;
                         float: right;
                         margin-right: 10px;
                         color: @download-text-color;
                         display: block;
                         background: @download-button-color;
                         border-radius: 50%;
+                        border-color: black;
+                        border-width: medium;
+                        border-style: solid;
 
                         i {
-                            margin-top: 10px;
+                            margin-top: 7px;
                         }
 
                         &:hover {
-                            background-color: lighten(@download-button-color, 10%);
+                            background-color: darken(@download-button-color, 10%);
                         };
 
                         &:active {
