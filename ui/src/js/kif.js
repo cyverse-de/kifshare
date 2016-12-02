@@ -44,6 +44,19 @@
         return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
     }
 
+    function enableCopy(wrapperId, selectionId) {
+        var wrapperElement = document.getElementById(wrapperId),
+            selectionElement = document.getElementById(selectionId);
+        wrapperElement.addEventListener('click', function() {
+            selectionElement.select();
+            document.execCommand('copy');
+            wrapperElement.textContent = "Copied";
+            window.setTimeout(function () {
+              wrapperElement.textContent = "Copy";
+            }, 1000);
+        });
+    }
+
     $(document).ready(function() {
         var ticket_info = get_ticket_info(),
             last_mod_date = new Date(Number($('#lastmod').text())),
@@ -54,22 +67,7 @@
             import_url = encodeFilename(htmlDecode(Mustache.render(import_template, ticket_info))),
             wget_command = htmlDecode(Mustache.render(wget_template, ticket_info)),
             curl_command = htmlDecode(Mustache.render(curl_template, ticket_info)),
-            iget_command = htmlDecode(Mustache.render(iget_template, ticket_info)),
-
-            copy_func = function (selector) {
-                return $(selector).val();
-            },
-
-            aftercopy_func = function (selector) {
-                return function () {
-                    $(selector).text("Copied!");
-                    window.setTimeout(function () {
-                        $(selector).text("Copy");
-                    }, 1000);
-                };
-            },
-
-            zero_clip_path = "resources/flash/ZeroClipboard.swf";
+            iget_command = htmlDecode(Mustache.render(iget_template, ticket_info));
 
         $('#lastmod').text(last_mod_date.toString());
         $('#de-import-url').val(import_url);
@@ -77,29 +75,10 @@
         $('#curl-command-line').val(curl_command);
         $('#wget-command-line').val(wget_command);
 
-        $('#clippy-import-wrapper').zclip({
-            path: zero_clip_path,
-            copy: copy_func('#de-import-url'),
-            afterCopy: aftercopy_func('#clippy-import-wrapper')
-        });
-
-        $('#clippy-irods-wrapper').zclip({
-            path: zero_clip_path,
-            copy: copy_func('#irods-command-line'),
-            afterCopy: aftercopy_func('#clippy-irods-wrapper')
-        });
-
-        $('#clippy-curl-wrapper').zclip({
-            path: zero_clip_path,
-            copy: copy_func('#curl-command-line'),
-            afterCopy: aftercopy_func('#clippy-curl-wrapper')
-        });
-
-        $('#clippy-wget-wrapper').zclip({
-            path: zero_clip_path,
-            copy: copy_func('#wget-command-line'),
-            afterCopy: aftercopy_func('#clippy-wget-wrapper')
-        });
+        enableCopy('clippy-import-wrapper', 'de-import-url');
+        enableCopy('clippy-irods-wrapper', 'irods-command-line');
+        enableCopy('clippy-curl-wrapper', 'curl-command-line');
+        enableCopy('clippy-wget-wrapper', 'wget-command-line');
     });
 
 }());
