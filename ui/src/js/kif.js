@@ -52,7 +52,7 @@
             document.execCommand('copy');
             wrapperElement.textContent = "Copied";
             window.setTimeout(function () {
-              wrapperElement.textContent = "Copy";
+                wrapperElement.textContent = "Copy";
             }, 1000);
         });
     }
