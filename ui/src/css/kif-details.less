@@ -5,8 +5,8 @@
 //Details section
 @header-text-color: #0971AB;
 @detail-label-width: 20%;
-@detail-content-width: (100% - @detail-label-width);
-@clippy-width: 10%;
+@detail-content-width: 70%;
+@clippy-width: 20%;
 @command-line-width: (@detail-content-width - @clippy-width);
 @command-line-height: 30px;
 @command-line-top-margin: 3px;
@@ -15,7 +15,7 @@
 @copy-bw-stop: 230;
 @detail-font: "Helvetica Neue", Arial, sans-serif;
 
-#details {
+#download {
     margin-top: 75px;
 }
 
@@ -47,26 +47,84 @@
 }
 
 .detail-label () {
-    float: left;
-    width: @detail-label-width;
-    h2 {
-        text-align: right;
-        padding-right: 10px;
-    }
+  .label-style;
+  .border-radius(0px, 0px, 10px, 10px);
 
-    p {
-        text-align: right;
-        padding-right: 10px;
+  font-size: 125%;
+  height: 30px;
+  float: left;
+  margin-top: 3px;
+  margin-right: 0px;
+
+  h2 {
+      text-align: right;
+      padding-right: 5px;
+  }
+
+  p {
+      text-align: right;
+      padding-right: 5px;
+  }
+
+  a {
+    i {
+      font-size: 50%;
+      vertical-align: top;
+      padding-top: 2px;
+      float: right;
     }
+  }
 }
 
 .detail-content () {
     float: left;
-    width: @detail-content-width;
+    //width: @detail-content-width;
     p {
         text-align: left;
-        padding-right: 10px;
+        //padding-right: 10px;
     }
+}
+
+@download-button-width: 150;
+@download-button-height: 150;
+
+.button-settings () {
+  margin-top: 25px;
+  margin-right: auto;
+  margin-left: unit(((960 / 2) - (@download-button-width / 2)), px);
+  text-align: center;
+  text-decoration: none;
+  width: @download-button-width;
+  height: @download-button-height;
+  border-radius: 50%;
+}
+
+// Styling for the Download section
+#download-header {.header-style; }
+#download-button-display {
+  .button-settings;
+  background-color: @download-button-color;
+  border-color: black;
+  border-width: medium;
+  border-style: solid;
+  .drop-shadow(5px, 5px, 5px, 0.5);
+
+  &:hover {
+    background-color: darken(@download-button-color, 10%);
+  };
+
+  &:active {
+    .drop-shadow(0px, 0px, 0px, 0.0);
+  };
+}
+
+#download-button-action {
+  .button-settings;
+  color: black;
+  float: right;
+  i {
+    margin-top: 10px;
+  }
 }
 
 //Styling for the File Details section.
@@ -80,13 +138,13 @@
 #irods-instructions-label,
 #wget-instructions-label,
 #curl-instructions-label {
-    .detail-style;
     .detail-label;
 }
 
 #lastmod, #size {
     .detail-style;
     .detail-content;
+    margin-top: @command-line-top-margin;
 }
 
 //Styling for the command-line/URL input boxes
@@ -97,7 +155,9 @@
     .detail-style;
     .detail-content;
     margin-top: @command-line-top-margin;
-    width: @command-line-width;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 10px;
     height: @command-line-height;
 }
 
@@ -109,8 +169,11 @@
     .detail-style;
     .detail-content;
     margin-top: @command-line-top-margin;
-    width: @clippy-width;
-    background-color: @download-button-color-start;
+    margin-right: 0px;
+    margin-left: 0px;
+    height: 28px;
+    width: 98px;
+    background-color: @copy-default;
     color: @download-text-color;
     text-align: center;
 
@@ -121,23 +184,17 @@
         darken(@download-button-color-start, 33%)
     );
 
-    .bw-gradient(
-        @copy-default,
-        @copy-bw-start,
-        @copy-bw-stop
-    );
-
     .border-radius(10px, 10px, 0px, 0px);
 
     &:hover, &.hover {
-        .bw-gradient(
-            lighten(@copy-default, 10%),
-            (@copy-bw-start + (@copy-bw-start/10)),
-            (@copy-bw-stop + (@copy-bw-stop/10))
-        );
+        background-color: darken(@copy-default, 10%);
     }
 
     &:active, &.active {
         .inner-shadow(2px, 4px, 6px, 0.5);
+    }
+
+    i {
+      margin-top: 4px;
     }
 }

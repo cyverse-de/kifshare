@@ -1,6 +1,10 @@
 @import "elements.less";
 @import "kif-common";
 
+#irods-avus-header {
+  margin-bottom: 3px;
+}
+
 //Metadata table
 #irods-avus {
     @table-border-color: darken(@bg-color, 10%);
@@ -22,9 +26,11 @@
             @table-border-color
         );
 
-        width: @table-width;
+        // width: @table-width;
         margin-top: @table-margin-top;
         margin-bottom: (@table-spacing * 4);
+        margin-right: 10px;
+        margin-left: 10px;
         background: @bg-color;
         padding: @table-padding;
         border-collapse: collapse;
@@ -45,9 +51,7 @@
         }
 
         th {
-            font-family: @table-header-font;
-            font-weight: bold;
-            background: darken(@bg-color, 25%);
+          .header-label;
         }
     }
 }
