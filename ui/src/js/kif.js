@@ -50,10 +50,6 @@
         wrapperElement.addEventListener('click', function() {
             selectionElement.select();
             document.execCommand('copy');
-            wrapperElement.textContent = "Copied";
-            window.setTimeout(function () {
-                wrapperElement.textContent = "Copy";
-            }, 1000);
         });
     }
 

@@ -5,8 +5,8 @@
 //Details section
 @header-text-color: #0971AB;
 @detail-label-width: 20%;
-@detail-content-width: (100% - @detail-label-width);
-@clippy-width: 10%;
+@detail-content-width: 70%;
+@clippy-width: 20%;
 @command-line-width: (@detail-content-width - @clippy-width);
 @command-line-height: 30px;
 @command-line-top-margin: 3px;
@@ -48,7 +48,7 @@
 
 .detail-label () {
     float: left;
-    width: @detail-label-width;
+    //width: @detail-label-width;
     h2 {
         text-align: right;
         padding-right: 10px;
@@ -62,10 +62,10 @@
 
 .detail-content () {
     float: left;
-    width: @detail-content-width;
+    //width: @detail-content-width;
     p {
         text-align: left;
-        padding-right: 10px;
+        //padding-right: 10px;
     }
 }
 
@@ -75,7 +75,7 @@
 .button-settings () {
   margin-top: 25px;
   margin-right: auto;
-  margin-left: auto;
+  margin-left: unit(((960 / 2) - (@download-button-width / 2)), px);
   text-align: center;
   text-decoration: none;
   width: @download-button-width;
@@ -105,9 +105,9 @@
 #download-button-action {
   .button-settings;
   color: black;
-
+  float: right;
   i {
-    margin-top: 14px;
+    margin-top: 10px;
   }
 }
 
@@ -139,7 +139,6 @@
     .detail-style;
     .detail-content;
     margin-top: @command-line-top-margin;
-    width: @command-line-width;
     height: @command-line-height;
 }
 
@@ -151,8 +150,8 @@
     .detail-style;
     .detail-content;
     margin-top: @command-line-top-margin;
-    width: @clippy-width;
-    background-color: @download-button-color-start;
+    width: 138px; //2 columns @ 80px - 2 px for the borders - 20 px for padding.
+    background-color: @copy-default;
     color: @download-text-color;
     text-align: center;
 
@@ -163,23 +162,17 @@
         darken(@download-button-color-start, 33%)
     );
 
-    .bw-gradient(
-        @copy-default,
-        @copy-bw-start,
-        @copy-bw-stop
-    );
-
     .border-radius(10px, 10px, 0px, 0px);
 
     &:hover, &.hover {
-        .bw-gradient(
-            lighten(@copy-default, 10%),
-            (@copy-bw-start + (@copy-bw-start/10)),
-            (@copy-bw-stop + (@copy-bw-stop/10))
-        );
+        background-color: darken(@copy-default, 10%);
     }
 
     &:active, &.active {
         .inner-shadow(2px, 4px, 6px, 0.5);
+    }
+
+    i {
+      margin-top: 4px;
     }
 }
