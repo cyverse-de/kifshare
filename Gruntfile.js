@@ -80,9 +80,16 @@ module.exports = function(grunt) {
             {
               expand: true,
               flatten: true,
-              cwd: 'ui/fa',
+              cwd: 'ui/fa/fonts',
               src: ['*'],
-              dest: "build/public/fa"
+              dest: "build/public/fa/fonts"
+            },
+            {
+              expand: true,
+              flatten: true,
+              cwd: 'ui/fa/css',
+              src: ['*'],
+              dest: "build/public/fa/css"
             }
         ]
       },
