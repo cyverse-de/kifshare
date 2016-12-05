@@ -28,5 +28,7 @@
                      :metadata metadata
                      :filesize (FileUtils/byteCountToDisplaySize
                                 (Long/parseLong (:filesize ticket-info)))
+                     :irods-url (cfg/irods-url)
+                     :de-url (cfg/de-url)
                      :ticket-info-json (json/generate-string
                                         (ui-ticket-info ticket-info)))))

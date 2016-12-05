@@ -25,7 +25,7 @@
       <ul>
         <li>
           <div id="logo-container">
-            <a href="http://www.cyverse.org/">
+            <a href="{{{de-url}}}">
               <img id="logo" src="resources/img/cyverse-logo-small.png">
             </a>
           </div>
