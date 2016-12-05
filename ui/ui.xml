@@ -90,7 +90,10 @@
 
       <div id="de-import-instructions-label" class="grid_3">
         <h2 title="Discovery Environment Import URL">
-          <a href="{{{de-url}}}">DE Import URL</a>
+          DE Import URL
+          <a href="{{{de-url}}}">
+            <i class="fa fa-question-circle fa-1"></i>
+          </a>
         </h2>
       </div>
 
@@ -101,7 +104,10 @@
 
       <div id="irods-instructions-label" class="grid_3">
         <h2 title="IRODS icommands">
-          <a href="{{{irods-url}}}">iRODS icommands</a>
+          iRODS icommands
+          <a href="{{{irods-url}}}">
+            <i class="fa fa-question-circle fa-1"></i>
+          </a>
         </h2>
       </div>
 
