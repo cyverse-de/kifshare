@@ -47,7 +47,7 @@
 
     <div class="container_12" id="page-wrapper">
       <div id="download">
-        <div id="download-header" class="grid_12">
+        <div id="download-header" class="grid_12 section-header">
           <h2>Download</h2>
         </div>
 
@@ -60,47 +60,33 @@
         <div class="section-spacer" class="grid_12"></div>
       </div>
 
-      <div id="details-header" class="grid_12">
+      <div id="details-header" class="grid_12 section-header">
         <h2>File Details</h2>
       </div>
 
-      <div id="lastmod-label" class="grid_3">
+      <div id="lastmod-label" class="grid_3 label">
         <p>Last Modified</p>
       </div>
 
-      <div id="lastmod" class="grid_9">
+      <div id="lastmod" class="grid_9 detail">
         {{{lastmod}}}
       </div>
 
-      <div id="size-label" class="grid_3">
+      <div id="size-label" class="grid_3 label">
         <p>File Size</p>
       </div>
 
-      <div id="size" class="grid_9">
+      <div id="size" class="grid_9 detail">
         {{{filesize}}}
       </div>
 
       <div class="section-spacer"></div>
 
-      <div id="alt-downloads-header" class="grid_12">
+      <div id="alt-downloads-header" class="grid_12 section-header">
         <h2>Alternative Download Methods</h2>
       </div>
 
-      <div id="de-import-instructions-label" class="grid_3">
-        <h2 title="Discovery Environment Import URL">
-          DE Import URL
-          <a href="{{{de-url}}}">
-            <i class="fa fa-question-circle fa-1"></i>
-          </a>
-        </h2>
-      </div>
-
-      <input id="de-import-url" type="text" class="grid_8" value>
-      <div id="clippy-import-wrapper" class="grid_1">
-        <i class="fa fa-files-o"></i>
-      </div>
-
-      <div id="irods-instructions-label" class="grid_3">
+      <div id="irods-instructions-label" class="grid_3 label">
         <h2 title="IRODS icommands">
           iRODS icommands
           <a href="{{{irods-url}}}">
@@ -109,39 +95,36 @@
         </h2>
       </div>
 
-      <div id="clippy-irods-instructions">
-        <input id="irods-command-line" type="text" class="grid_8" value>
-        <div id="clippy-irods-wrapper" class="grid_1">
-          <i class="fa fa-files-o"></i>
-        </div>
+      <input id="irods-command-line" type="text" class="grid_8 detail command-line" value>
+
+      <div id="irods-copy" class="grid_1 detail copy-button">
+        <i class="fa fa-files-o"></i>
       </div>
 
-      <div id="wget-instructions-label" class="grid_3">
+      <div id="wget-instructions-label" class="grid_3 label">
         <p>Wget</p>
       </div>
 
-      <div id="clippy-wget-instructions">
-        <input id="wget-command-line" type="text" class="grid_8" value>
-        <div id="clippy-wget-wrapper" class="grid_1">
-          <i class="fa fa-files-o"></i>
-        </div>
+      <input id="wget-command-line" type="text" class="grid_8 detail command-line" value>
+
+      <div id="wget-copy" class="grid_1 detail copy-button">
+        <i class="fa fa-files-o"></i>
       </div>
 
-      <div id="curl-instructions-label" class="grid_3">
+      <div id="curl-instructions-label" class="grid_3 label">
         <p>cURL</p>
       </div>
 
-      <div id="clippy-curl-instructions">
-        <input id="curl-command-line" type="text" class="grid_8" value>
-        <div id="clippy-curl-wrapper" class="grid_1">
-          <i class="fa fa-files-o"></i>
-        </div>
+      <input id="curl-command-line" type="text" class="grid_8 detail command-line" value>
+
+      <div id="curl-copy" class="grid_1 detail copy-button">
+        <i class="fa fa-files-o"></i>
       </div>
 
       <div class="section-spacer"></div>
 
       <div id="irods-avus">
-        <div id="irods-avus-header" class="grid_12">
+        <div id="irods-avus-header" class="grid_12 section-header">
           <h2>Metadata</h2>
         </div>
 

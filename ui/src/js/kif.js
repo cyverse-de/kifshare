@@ -1,13 +1,6 @@
 (function () {
     "use strict";
 
-    function encodeFilename(file_url) {
-        var split_paths = file_url.split("/"),
-            file_index = split_paths.length - 1;
-        split_paths[file_index] = encodeURIComponent(split_paths[file_index]);
-        return split_paths.join("/");
-    }
-
     function trimURLPath(pathname) {
         var split_paths = pathname.split("/"),
             new_path_array = split_paths.slice(0, split_paths.length - 1);
@@ -56,25 +49,21 @@
     $(document).ready(function() {
         var ticket_info = get_ticket_info(),
             last_mod_date = new Date(Number($('#lastmod').text())),
-            import_template = ticket_info.import_template,
             wget_template = ticket_info.wget_template,
             curl_template = ticket_info.curl_template,
             iget_template = ticket_info.iget_template,
-            import_url = encodeFilename(htmlDecode(Mustache.render(import_template, ticket_info))),
             wget_command = htmlDecode(Mustache.render(wget_template, ticket_info)),
             curl_command = htmlDecode(Mustache.render(curl_template, ticket_info)),
             iget_command = htmlDecode(Mustache.render(iget_template, ticket_info));
 
         $('#lastmod').text(last_mod_date.toString());
-        $('#de-import-url').val(import_url);
         $('#irods-command-line').val(iget_command);
         $('#curl-command-line').val(curl_command);
         $('#wget-command-line').val(wget_command);
 
-        enableCopy('clippy-import-wrapper', 'de-import-url');
-        enableCopy('clippy-irods-wrapper', 'irods-command-line');
-        enableCopy('clippy-curl-wrapper', 'curl-command-line');
-        enableCopy('clippy-wget-wrapper', 'wget-command-line');
+        enableCopy('irods-copy', 'irods-command-line');
+        enableCopy('curl-copy', 'curl-command-line');
+        enableCopy('wget-copy', 'wget-command-line');
     });
 
 }());
