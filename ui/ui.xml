@@ -46,19 +46,17 @@
     </div>
 
     <div class="container_12" id="page-wrapper">
-      <div id="download">
-        <div id="download-header" class="grid_12 section-header">
-          <h2>Download</h2>
-        </div>
-
-        <a href="d/{{ticket-id}}/{{filename}}">
-          <div id="download-button-display" class="grid_12">
-            <i class="fa fa-download fa-5x"></i>
-          </div>
-        </a>
-
-        <div class="section-spacer" class="grid_12"></div>
+      <div id="download-header" class="grid_12 section-header">
+        <h2>Download</h2>
       </div>
+
+      <a href="d/{{ticket-id}}/{{filename}}">
+        <div id="download-button-display" class="grid_12">
+          <i class="fa fa-download fa-5x"></i>
+        </div>
+      </a>
+
+      <div class="section-spacer" class="grid_12"></div>
 
       <div id="details-header" class="grid_12 section-header">
         <h2>File Details</h2>
