@@ -98,7 +98,7 @@
 
       <input id="irods-command-line" type="text" class="grid_8 detail command-line" value>
 
-      <div id="irods-copy" class="grid_1 detail copy-button">
+      <div id="irods-copy" class="grid_1 detail copy-button" data-balloon="Copy to clipboard." data-balloon-pos="up">
         <i class="fa fa-files-o"></i>
       </div>
 
@@ -108,7 +108,7 @@
 
       <input id="wget-command-line" type="text" class="grid_8 detail command-line" value>
 
-      <div id="wget-copy" class="grid_1 detail copy-button">
+      <div id="wget-copy" class="grid_1 detail copy-button" data-balloon="Copy to clipboard." data-balloon-pos="up">
         <i class="fa fa-files-o"></i>
       </div>
 
@@ -118,7 +118,7 @@
 
       <input id="curl-command-line" type="text" class="grid_8 detail command-line" value>
 
-      <div id="curl-copy" class="grid_1 detail copy-button">
+      <div id="curl-copy" class="grid_1 detail copy-button" data-balloon="Copy to clipboard." data-balloon-pos="up">
         <i class="fa fa-files-o"></i>
       </div>
 
