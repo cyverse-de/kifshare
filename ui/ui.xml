@@ -88,9 +88,9 @@
       </div>
 
       <div id="irods-instructions-label" class="grid_3 label">
-        <h2 title="IRODS icommands">
+        <h2>
           iRODS icommands
-          <a href="{{{irods-url}}}">
+          <a href="{{{irods-url}}}" data-balloon="iRODS icommands documentation." data-balloon-pos="up">
             <i class="fa fa-question-circle fa-1"></i>
           </a>
         </h2>
