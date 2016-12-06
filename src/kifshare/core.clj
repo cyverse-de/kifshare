@@ -69,7 +69,7 @@
   (GET "/resources/js/:rsc-name"
        [rsc-name]
        (let [resource-root (ft/path-join (cfg/resources-root) (cfg/js-dir))]
-         (static-resp rsc-name :root resource-root)))
+         (resp/content-type (static-resp rsc-name :root resource-root) "application/json")))
 
   (GET "/resources/flash/:rsc-name"
        [rsc-name]
