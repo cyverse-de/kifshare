@@ -18,11 +18,8 @@ COPY . /usr/src/app
 
 RUN npm install
 RUN grunt build-resources
-RUN cp -r build/* resources/
 RUN lein uberjar
 RUN cp target/kifshare-standalone.jar .
-
-COPY ui/ui.xml resources/ui.xml
 
 RUN ln -s "/usr/bin/java" "/bin/kifshare"
 

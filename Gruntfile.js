@@ -42,7 +42,7 @@ module.exports = function(grunt) {
     uglify: {
       dist: {
         files : {
-            "build/public/js/kif.js" : ["ui/src/js/kif.js"]
+            "resources/js/kif.js" : ["ui/src/js/kif.js"]
         }
       }
     },
@@ -54,48 +54,55 @@ module.exports = function(grunt) {
               flatten: true,
               cwd: 'ui/src/js/',
               src: ["jquery*.js", "json2.js", "ZeroClipboard*.js"],
-              dest: "build/public/js/"
+              dest: "resources/js/"
             },
             {
               expand: true,
               flatten: true,
               cwd: 'ui/src/css/',
               src: ['*.css'],
-              dest: "build/public/css/"
+              dest: "resources/css/"
             },
             {
               expand: true,
               flatten: true,
               cwd: 'ui/src/img',
               src: ['*'],
-              dest: "build/public/img/"
+              dest: "resources/img/"
             },
             {
               expand: true,
               flatten: true,
               cwd: 'ui/src',
               src: ["robots.txt"],
-              dest: "build/public/"
+              dest: "resources"
             },
             {
               expand: true,
               flatten: true,
               cwd: 'ui/fa/fonts',
               src: ['*'],
-              dest: "build/public/fa/fonts"
+              dest: "resources/fa/fonts"
             },
             {
               expand: true,
               flatten: true,
               cwd: 'ui/fa/css',
               src: ['*'],
-              dest: "build/public/fa/css"
+              dest: "resources/fa/css"
+            },
+            {
+              expand: true,
+              flatten: true,
+              cwd: 'ui',
+              src: ['ui.xml'],
+              dest: 'resources/'
             }
         ]
       },
       kifjs: {
         files: [
-          {src: ["ui/src/js/kif.js"], dest: "build/public/js/"}
+          {src: ["ui/src/js/kif.js"], dest: "resources/js/"}
         ]
       }
     },
@@ -104,16 +111,16 @@ module.exports = function(grunt) {
         failOnError: true
       },
       make_js_resources: {
-        command: 'mkdir -p build/public/js'
+        command: 'mkdir -p resources/js'
       },
       make_css_resources: {
-        command: 'mkdir -p build/public/css'
+        command: 'mkdir -p resources/css'
       },
       make_flash_resources: {
-        command: 'mkdir -p build/public/flash'
+        command: 'mkdir -p resources/flash'
       },
       make_img_resources: {
-        command: 'mkdir -p build/public/img'
+        command: 'mkdir -p resources/img'
       },
       lein_clean: {
         command: 'lein clean'
@@ -126,13 +133,13 @@ module.exports = function(grunt) {
         stdout: true
       },
       clean_resources: {
-        command: 'rm -rf build/'
+        command: 'rm -rf resources/'
       }
     },
     less: {
       build: {
         files: {
-          "build/public/css/kif.css" : "ui/src/css/kif.less"
+          "resources/css/kif.css" : "ui/src/css/kif.less"
         }
       }
     },
