@@ -3,6 +3,7 @@
     <title>{{{filename}}}</title>
     <link href="resources/css/reset.css" rel="stylesheet" type="text/css" />
     <link href="resources/css/960.css" rel="stylesheet" type="text/css" />
+    <link href="resources/css/balloon.min.css" rel="stylesheet" type="text/css" />
     <link href="https://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.8.2/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
     <link href="resources/css/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
     <link href="resources/fa/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -38,7 +39,9 @@
         <li>
           <div id="menu-download-button-display">
             <a href="d/{{ticket-id}}/{{filename}}">
-              <div id="download-link-area"><i class="fa fa-download"></i></div>
+              <div id="download-link-area" data-balloon="Download the file." data-balloon-pos="left">
+                <i class="fa fa-download"></i>
+              </div>
             </a>
           </div>
         </li>
@@ -51,7 +54,7 @@
       </div>
 
       <a href="d/{{ticket-id}}/{{filename}}">
-        <div id="download-button-display" class="grid_12">
+        <div id="download-button-display" data-balloon="Download the file." data-balloon-pos="down" class="grid_12">
           <i class="fa fa-download fa-5x"></i>
         </div>
       </a>
