@@ -53,9 +53,7 @@
 
         <a href="d/{{ticket-id}}/{{filename}}">
           <div id="download-button-display" class="grid_12">
-            <div id="download-button-action">
-              <i class="fa fa-download fa-5x"></i>
-            </div>
+            <i class="fa fa-download fa-5x"></i>
           </div>
         </a>
 

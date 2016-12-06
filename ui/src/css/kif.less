@@ -6,6 +6,34 @@
 
 body { background: @bg-color; }
 
+.tooltip {
+  display: inline;
+  position: relative;
+
+  &:hover {
+    &:after {
+      background: black;
+      text-color: white;
+      border-radius: 5px;
+      content: attr(title);
+      position: absolute;
+      width: 200px;
+      z-index: 98;
+    }
+
+    &:before {
+      border: solid;
+      border-color: #333 transparent;
+      border-width: 6px 6px 0 6px;
+      bottom: 20px;
+      content: "";
+      left: 50%;
+      position: absolute;
+      z-index: 99;
+    }
+  }
+}
+
 #footer {
     font-size: 12px;
     width: 100%;
