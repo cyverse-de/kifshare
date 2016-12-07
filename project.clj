@@ -54,4 +54,5 @@
             [test2junit "1.2.2"]
             [lein-ring "0.7.5"]]
 
-  :main ^:skip-aot kifshare.core)
+  :main ^:skip-aot kifshare.core
+  :jvm-opts ["-Dlogback.configurationFile=/etc/iplant/de/logging/kifshare-logging.xml"])

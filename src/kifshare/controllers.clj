@@ -23,12 +23,12 @@
 (defn show-landing-page
   "Handles error checking and decides whether to show the
    landing page or an error page."
-  [cm ticket-id ticket-info]
+  [cm ticket-id ticket-info-promise]
   (log/debug "entered kifshare.controllers/show-landing-page")
   (landing-page
    ticket-id
-   (object-metadata cm (tickets/ticket-abs-path cm ticket-id))
-   ticket-info))
+   (future (object-metadata cm (tickets/ticket-abs-path cm ticket-id)))
+   ticket-info-promise))
 
 (defn error-map-response
   [request err-map]
@@ -45,8 +45,7 @@
     (try+
      (tickets/check-ticket cm ticket-id)
 
-     (let [ticket-info (tickets/ticket-info cm ticket-id)]
-       (log/debug "Ticket Info:\n" ticket-info)
+     (let [ticket-info (future (tickets/ticket-info cm ticket-id))]
        {:status 200 :body (show-landing-page cm ticket-id ticket-info)})
 
      (catch error? err

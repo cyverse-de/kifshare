@@ -46,24 +46,22 @@
         });
     }
 
-    $(document).ready(function() {
-        var ticket_info = get_ticket_info(),
-            last_mod_date = new Date(Number($('#lastmod').text())),
-            wget_template = ticket_info.wget_template,
-            curl_template = ticket_info.curl_template,
-            iget_template = ticket_info.iget_template,
-            wget_command = htmlDecode(Mustache.render(wget_template, ticket_info)),
-            curl_command = htmlDecode(Mustache.render(curl_template, ticket_info)),
-            iget_command = htmlDecode(Mustache.render(iget_template, ticket_info));
+    var ticket_info = get_ticket_info(),
+        last_mod_date = new Date(Number($('#lastmod').text())),
+        wget_template = ticket_info.wget_template,
+        curl_template = ticket_info.curl_template,
+        iget_template = ticket_info.iget_template,
+        wget_command = htmlDecode(Mustache.render(wget_template, ticket_info)),
+        curl_command = htmlDecode(Mustache.render(curl_template, ticket_info)),
+        iget_command = htmlDecode(Mustache.render(iget_template, ticket_info));
 
-        $('#lastmod').text(last_mod_date.toString());
-        $('#irods-command-line').val(iget_command);
-        $('#curl-command-line').val(curl_command);
-        $('#wget-command-line').val(wget_command);
+    $('#lastmod').text(last_mod_date.toString());
+    $('#irods-command-line').val(iget_command);
+    $('#curl-command-line').val(curl_command);
+    $('#wget-command-line').val(wget_command);
 
-        enableCopy('irods-copy', 'irods-command-line');
-        enableCopy('curl-copy', 'curl-command-line');
-        enableCopy('wget-copy', 'wget-command-line');
-    });
+    enableCopy('irods-copy', 'irods-command-line');
+    enableCopy('curl-copy', 'curl-command-line');
+    enableCopy('wget-copy', 'wget-command-line');
 
 }());

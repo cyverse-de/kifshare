@@ -1,0 +1,9 @@
+<html>
+  <head>
+    <link href="resources/css/reset.css" rel="stylesheet" type="text/css" />
+    <link href="resources/css/960.css" rel="stylesheet" type="text/css" />
+    <link href="resources/css/balloon.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.8.2/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+    <link href="resources/css/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
+    <link href="resources/fa/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="resources/css/kif.css" rel="stylesheet" type="text/css" />

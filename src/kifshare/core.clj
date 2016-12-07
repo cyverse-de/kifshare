@@ -97,7 +97,7 @@
        (controllers/download-ticket ticket-id request))
 
   (GET "/:ticket-id" [ticket-id :as request]
-       (resp/content-type (controllers/get-ticket ticket-id request) "text/html"))
+       (resp/content-type (controllers/get-ticket ticket-id request) "text/html; charset=utf-8"))
 
   (route/resources "/")
 
@@ -160,12 +160,24 @@
       (.start (Thread. listen-for-events))
       (with-redefs [clojure.java.io/buffer-size override-buffer-size]
         (let [port (Integer/parseInt (string/trim (get @cfg/props "kifshare.app.port")))]
-          (ui/read-template)
+          (ui/read-head-template)
           (hawk/watch! {:watcher :polling}
-                       [{:paths ["resources/ui.xml"]
+                       [{:paths ["resources/head.xml"]
                          :handler (fn [ctx e]
                                     (when (= (:kind e) :modify)
-                                      (ui/read-template)))}])
+                                      (ui/read-head-template)))}])
+          (ui/read-pre-avus-template)
+          (hawk/watch! {:watcher :polling}
+                       [{:paths ["resources/pre-avus.xml"]
+                         :handler (fn [ctx e]
+                                    (when (= (:kind e) :modify)
+                                      (ui/read-pre-avus-template)))}])
+          (ui/read-avus-and-footer-template)
+          (hawk/watch! {:watcher :polling}
+                       [{:paths ["resources/avus-and-footer.xml"]
+                         :handler (fn [ctx e]
+                                    (when (= (:kind e) :modify)
+                                      (ui/read-avus-and-footer-template)))}])
           (log/warn "Configured listen port is: " port)
           (require 'ring.adapter.jetty)
-          ((eval 'ring.adapter.jetty/run-jetty) app {:port port}))))))
+          ((eval 'ring.adapter.jetty/run-jetty) app {:port port :output-buffer-size 1024}))))))
