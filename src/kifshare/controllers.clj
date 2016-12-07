@@ -12,13 +12,13 @@
             [clj-jargon.init :as jinit]
             [kifshare.errors :as errors]))
 
-(defn object-metadata
+(defn- object-metadata
   [cm abspath]
   (log/debug "kifshare.controllers/object-metadata")
 
-  (filterv
+  (future (filterv
    #(not= (:unit %1) "ipc-system-avu")
-   (jmeta/get-metadata cm abspath)))
+   (jmeta/get-metadata cm abspath))))
 
 (defn show-landing-page
   "Handles error checking and decides whether to show the

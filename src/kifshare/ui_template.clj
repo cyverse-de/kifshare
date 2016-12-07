@@ -21,11 +21,11 @@
     :iget_template   (cfg/iget-flags)))
 
 (defn landing-page
-  [ticket-id metadata ticket-info]
+  [ticket-id metadata-promise ticket-info]
   (log/debug "entered kifshare.ui-template/landing-page")
   (prs/render @tmpl
               (assoc ticket-info
-                     :metadata metadata
+                     :metadata @metadata-promise
                      :filesize (FileUtils/byteCountToDisplaySize
                                 (Long/parseLong (:filesize ticket-info)))
                      :irods-url (cfg/irods-url)

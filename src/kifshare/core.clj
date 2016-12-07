@@ -97,7 +97,7 @@
        (controllers/download-ticket ticket-id request))
 
   (GET "/:ticket-id" [ticket-id :as request]
-       (resp/content-type (controllers/get-ticket ticket-id request) "text/html"))
+       (resp/content-type (controllers/get-ticket ticket-id request) "text/html; charset=utf-8"))
 
   (route/resources "/")
 
