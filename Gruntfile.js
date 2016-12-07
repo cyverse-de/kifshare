@@ -95,7 +95,7 @@ module.exports = function(grunt) {
               expand: true,
               flatten: true,
               cwd: 'ui',
-              src: ['ui.xml'],
+              src: ['*.xml'],
               dest: 'resources/'
             }
         ]
