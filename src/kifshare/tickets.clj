@@ -78,7 +78,7 @@
      [:headers "Content-Disposition"] (str "attachment; filename=\"" (:filename ti)  "\""))))
 
 (defn download-byte-range
-  "Calls (check-ticket and returns a response map containing a byte range from a file."
+  "Calls (check-ticket) and returns a response map containing a byte range from a file."
   [cm ticket-id start-byte end-byte]
   (log/debug "entered kifshare.tickets/download")
 
@@ -88,7 +88,7 @@
         abs-path   (:abspath ti)
         byte-range (paging/read-at-position cm abs-path start-byte (- end-byte start-byte) false)]
     (log/warn "Download file range " start-byte "-" end-byte "for ticket" ticket-id)
-    (-> {:status 200
+    (-> {:status 206
          :body   (java.io.ByteArrayInputStream. byte-range)}
         (assoc-in
          [:headers "Content-Range"]
