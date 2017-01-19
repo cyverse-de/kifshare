@@ -91,7 +91,7 @@
   (try+
     (log/info "Downloading " ticket-id " as " filename)
     (if (and (range-request? ring-request) (valid-range? ring-request))
-      (jinit/with-jargon (jargon-config) [cm]
+      (jinit/with-jargon (jargon-config) :auto-close false [cm]
         (download-range cm ticket-id ring-request))
       (jinit/with-jargon (jargon-config) :auto-close false [cm]
         (tickets/download cm ticket-id)))

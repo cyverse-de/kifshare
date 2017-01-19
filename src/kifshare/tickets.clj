@@ -4,7 +4,8 @@
             [clj-jargon.item-info :as jinfo]
             [clj-jargon.paging :as paging]
             [clojure-commons.file-utils :as ft]
-            [clojure.tools.logging :as log])
+            [clojure.tools.logging :as log]
+            [kifshare.inputs :refer [chunk-stream]])
   (:use [slingshot.slingshot :only [try+ throw+]]
         [kifshare.errors]
         [kifshare.config :only [username]]
@@ -86,10 +87,10 @@
 
   (let [ti         (ticket-info cm ticket-id)
         abs-path   (:abspath ti)
-        byte-range (paging/read-at-position cm abs-path start-byte (- end-byte start-byte) false)]
+        stream     (chunk-stream cm abs-path start-byte end-byte)]
     (log/warn "Download file range " start-byte "-" end-byte "for ticket" ticket-id)
     (-> {:status 206
-         :body   (java.io.ByteArrayInputStream. byte-range)}
+         :body   stream}
         (assoc-in
          [:headers "Content-Range"]
          (str "Content-Range: bytes " start-byte "-" end-byte "/" (:filesize ti)))
