@@ -3,7 +3,7 @@
         [clj-jargon.item-ops]
         [clj-jargon.item-info]
         [clj-jargon.paging])
-  (:import [java.io InputStream]))
+  (:import [java.io InputStream BufferedInputStream]))
 
 (defn raw-chunk-stream
   "Produce a proxy InputStream for a given file path, which reads only from start-byte to end-byte. For use with range requests."
@@ -50,7 +50,9 @@
       (close []
         (.close raf)))))
 
+(def ^:private buffer-size (* 8192 8))
+
 (defn chunk-stream
-  "Same as raw-chunk-stream, but uses proxy-input-stream to automatically close the context-manager when it's done"
+  "Same as raw-chunk-stream, but uses proxy-input-stream to automatically close the context-manager when it's done, and buffers the InputStream"
   [cm ^String filepath start-byte end-byte]
-  (proxy-input-stream cm (raw-chunk-stream cm filepath start-byte end-byte)))
+  (proxy-input-stream cm (BufferedInputStream. (raw-chunk-stream cm filepath start-byte end-byte) buffer-size)))
