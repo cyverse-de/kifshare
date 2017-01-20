@@ -77,7 +77,7 @@
   (log/debug "entered kifshare.tickets/download-byte-range")
 
   (if (or (> start-byte end-byte)
-          (> start-byte (Long/parseLong (:filesize ticket-info))))
+          (>= start-byte (Long/parseLong (:filesize ticket-info))))
     {:status 416
      :body "The requested range is not satisfiable."
      :headers {"Content-Range" (str "bytes */" (:filesize ticket-info))

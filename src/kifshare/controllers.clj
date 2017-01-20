@@ -70,26 +70,30 @@
   (re-matches range-regex (get-in ring-request [:headers "range"])))
 
 (defn- longify
+  "Turn the argument to a long if it's relatively easy to do so (integral numbers and strings)"
   [str-long]
-  (Long/parseLong str-long))
+  (if (integer? str-long)
+    (long str-long)
+    (Long/parseLong str-long)))
 
 (defn- extract-range
   "Extract start and end bytes from the Range header"
   [ring-request filesize]
   (let [range-header  (get-in ring-request [:headers "range"])
         range-matches (re-matches range-regex range-header)
+        last-byte     (- (longify filesize) 1)
         start?        (seq (nth range-matches 2))
         end?          (seq (nth range-matches 3))
         ;; "N-" means N-EOF; "-M" means (EOF-M)-EOF, so:
-        ;; Start is as specified, or filesize minus specified end
-        ;; End is as specified only if both are specified, otherwise filesize
+        ;; Start is as specified, or specified number of bytes returned (i.e. filesize - specified)
+        ;; End is as specified only if both are specified, otherwise last byte
         start         (if start?
-                        (nth range-matches 2)
-                        (str (- (longify filesize) (longify (nth range-matches 3)))))
+                        (longify (nth range-matches 2))
+                        (- (longify filesize) (longify (nth range-matches 3))))
         end           (if (and end? start?)
-                        (nth range-matches 3)
-                        filesize)]
-    [(max 0 (longify start)) (longify end)]))
+                        (longify (nth range-matches 3))
+                        last-byte)]
+    [(max 0 start) (min end last-byte)]))
 
 (defn download-range
   [cm ticket-id ring-request]
