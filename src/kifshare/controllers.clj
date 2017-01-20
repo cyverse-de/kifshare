@@ -27,7 +27,7 @@
   (log/debug "entered kifshare.controllers/show-landing-page")
   (landing-page
    ticket-id
-   (object-metadata cm (tickets/ticket-abs-path cm ticket-id))
+   (object-metadata cm (:abspath ticket-info))
    ticket-info))
 
 (defn error-map-response
@@ -43,8 +43,7 @@
 
   (jinit/with-jargon (jargon-config) [cm]
     (try+
-     (tickets/check-ticket cm ticket-id)
-
+     ; check-ticket is called by ticket-info
      (let [ticket-info (tickets/ticket-info cm ticket-id)]
        (log/debug "Ticket Info:\n" ticket-info)
        {:status 200 :body (show-landing-page cm ticket-id ticket-info)})
@@ -62,26 +61,42 @@
   (and (contains? ring-request :headers)
        (contains? (:headers ring-request) "range")))
 
-(def range-regex #"\s*(bytes)\s*=\s*([0-9]+)\s*\-\s*([0-9]+)\s*")
+;; begins with bytes=; then a start-end range (where excluding either number works, but not both)
+;; regex lookahead/lookbehind to ensure only one number is missing, not both
+(def ^:private range-regex #"\s*(bytes)\s*=\s*([0-9]+|(?=-\d))\-([0-9]+|(?<=\d-))\s*")
 
 (defn valid-range?
   [ring-request]
-  (re-seq range-regex (get-in ring-request [:headers "range"])))
+  (re-matches range-regex (get-in ring-request [:headers "range"])))
 
-(defn extract-range
-  [ring-request]
-  (let [range-header  (get-in ring-request [:headers "range"])
-        range-matches (re-matches range-regex range-header)]
-    [(nth range-matches 2) (nth range-matches 3)]))
-
-(defn longify
+(defn- longify
   [str-long]
   (Long/parseLong str-long))
 
+(defn- extract-range
+  "Extract start and end bytes from the Range header"
+  [ring-request filesize]
+  (let [range-header  (get-in ring-request [:headers "range"])
+        range-matches (re-matches range-regex range-header)
+        start?        (seq (nth range-matches 2))
+        end?          (seq (nth range-matches 3))
+        ;; "N-" means N-EOF; "-M" means (EOF-M)-EOF, so:
+        ;; Start is as specified, or filesize minus specified end
+        ;; End is as specified only if both are specified, otherwise filesize
+        start         (if start?
+                        (nth range-matches 2)
+                        (str (- (longify filesize) (longify (nth range-matches 3)))))
+        end           (if (and end? start?)
+                        (nth range-matches 3)
+                        filesize)]
+    [(max 0 (longify start)) (longify end)]))
+
 (defn download-range
   [cm ticket-id ring-request]
-  (let [[start-byte end-byte] (extract-range ring-request)]
-    (tickets/download-byte-range cm ticket-id (longify start-byte) (longify end-byte))))
+  ; check-ticket is called by ticket-info
+  (let [ticket-info (tickets/ticket-info cm ticket-id)
+        [start-byte end-byte] (extract-range ring-request (:filesize ticket-info))]
+    (tickets/download-byte-range cm ticket-info start-byte end-byte)))
 
 (defn download-file
   "Allows the caller to download a file associated with a ticket."

@@ -59,18 +59,11 @@
     (log/debug "Ticket Info:\n" retval)
     retval))
 
-(defn ticket-abs-path
-  [cm ticket-id]
-  (log/debug "entered kifshare.tickets/ticket-abs-path")
-  (.getIrodsAbsolutePath (jtickets/ticket-by-id cm (username) ticket-id)))
-
 (defn download
-  "Calls (check-ticket) and returns a response map containing an
+  "Calls `check-ticket` (via ticket-info) and returns a response map containing an
    input-stream to the file associated with the ticket."
   [cm ticket-id]
   (log/debug "entered kifshare.tickets/download")
-
-  (check-ticket cm ticket-id)
 
   (let [ti (ticket-info cm ticket-id)]
     (log/warn "Dowloading file associated with ticket " ticket-id)
@@ -79,21 +72,20 @@
      [:headers "Content-Disposition"] (str "attachment; filename=\"" (:filename ti)  "\""))))
 
 (defn download-byte-range
-  "Calls (check-ticket) and returns a response map containing a byte range from a file."
-  [cm ticket-id start-byte end-byte]
-  (log/debug "entered kifshare.tickets/download")
+  "Returns a response map containing a byte range from a file. Assumes check-ticket has been called already, probably by ticket-info"
+  [cm ticket-info start-byte end-byte]
+  (log/debug "entered kifshare.tickets/download-byte-range")
 
-  (check-ticket cm ticket-id)
-
-  (let [ti         (ticket-info cm ticket-id)
-        abs-path   (:abspath ti)
-        stream     (chunk-stream cm abs-path start-byte end-byte)]
-    (log/warn "Download file range " start-byte "-" end-byte "for ticket" ticket-id)
-    (-> {:status 206
-         :body   stream}
-        (assoc-in
-         [:headers "Content-Range"]
-         (str "Content-Range: bytes " start-byte "-" end-byte "/" (:filesize ti)))
-        (assoc-in
-         [:headers "Accept-Ranges"]
-         (str "Accept-Ranges: bytes")))))
+  (if (or (> start-byte end-byte)
+          (> start-byte (Long/parseLong (:filesize ticket-info))))
+    {:status 416
+     :body "The requested range is not satisfiable."
+     :headers {"Content-Range" (str "bytes */" (:filesize ticket-info))
+               "Accept-Ranges" "bytes"}}
+    (do
+      (log/warn "Download file range:" start-byte "-" end-byte "for ticket" (:ticket-id ticket-info))
+      {:status 206
+       :body   (chunk-stream cm (:abspath ticket-info) start-byte end-byte)
+       :headers
+       {"Content-Range" (str "bytes " start-byte "-" end-byte "/" (:filesize ticket-info))
+        "Accept-Ranges" "bytes"}})))
