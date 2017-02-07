@@ -87,11 +87,17 @@
   (HEAD "/d/:ticket-id/:filename" [ticket-id]
         (controllers/file-info ticket-id))
 
+  (OPTIONS "/d/:ticket-id/:filename" [ticket-id]
+        (controllers/file-options ticket-id))
+
   (GET "/d/:ticket-id/:filename" [ticket-id filename :as request]
        (controllers/download-file ticket-id filename request))
 
   (HEAD "/d/:ticket-id" [ticket-id]
         (controllers/file-info ticket-id))
+
+  (OPTIONS "/d/:ticket-id" [ticket-id]
+        (controllers/file-options ticket-id))
 
   (GET "/d/:ticket-id" [ticket-id :as request]
        (controllers/download-ticket ticket-id request))
