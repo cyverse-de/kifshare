@@ -18,3 +18,4 @@ build/
 .*.swp
 build.xml
 test2junit
+resources/
