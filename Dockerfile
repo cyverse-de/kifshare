@@ -1,13 +1,11 @@
-FROM clojure:alpine
+FROM discoenv/clojure-base:master
 
-RUN apk add --update git nodejs-lts && \
+RUN apk add --no-cache --update nodejs-lts && \
     rm -rf /var/cache/apk
 
 VOLUME ["/etc/iplant/de"]
 
 RUN npm install -g grunt-cli
-
-WORKDIR /usr/src/app
 
 COPY project.clj /usr/src/app/
 RUN lein deps
