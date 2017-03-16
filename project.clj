@@ -39,7 +39,7 @@
                  [slingshot "0.12.2"]
                  [compojure "1.5.0"]
                  [de.ubercode.clostache/clostache "1.4.0"]
-                 [com.cemerick/url "0.1.1"]]
+                 [com.cemerick/url "0.1.1" :exclusions [com.cemerick/clojurescript.test]]]
 
   :eastwood {:exclude-namespaces [:test-paths]
              :linters [:wrong-arity :wrong-ns-form :wrong-pre-post :wrong-tag :misplaced-docstrings]}
