@@ -23,20 +23,85 @@
             [service-logging.thread-context :as tc]
             [hawk.core :as hawk]))
 
-(defn keep-alive
+(defn- keep-alive
   [resp]
   (assoc-in resp [:headers "Connection"] "Keep-Alive"))
 
-(defn caching
+(defn- caching
   [resp]
   (assoc-in resp [:headers "Cache-Control"]
             (str (cfg/client-cache-scope) ", max-age=" (cfg/client-cache-max-age))))
 
-(defn static-resp
+(defn- static-resp
   [file-path & {:keys [root] :or {root (cfg/resources-root)}}]
   (-> (resp/file-response file-path {:root root})
       caching
       keep-alive))
+
+(defn- well-known-routes []
+  (routes
+    (GET "/favicon.ico" []
+         (static-resp (cfg/favicon-path)))
+
+    (GET "/robots.txt" []
+         (static-resp (cfg/robots-txt-path)))))
+
+(defn- resources-routes []
+  (context "/resources" []
+    (GET "/:rsc-name"
+         [rsc-name]
+         (static-resp rsc-name))
+
+    (GET "/fa/css/:rsc-name"
+         [rsc-name]
+         (let [resource-root (ft/path-join (cfg/resources-root) "fa/css")]
+           (resp/content-type (static-resp rsc-name :root resource-root) "text/css")))
+
+    (GET "/fa/fonts/:rsc-name"
+         [rsc-name]
+         (let [resource-root (ft/path-join (cfg/resources-root) "fa/fonts")]
+           (static-resp rsc-name :root resource-root)))
+
+    (GET "/css/:rsc-name"
+         [rsc-name]
+         (let [resource-root (ft/path-join (cfg/resources-root) (cfg/css-dir))]
+           (resp/content-type (static-resp rsc-name :root resource-root) "text/css")))
+
+    (GET "/js/:rsc-name"
+         [rsc-name]
+         (let [resource-root (ft/path-join (cfg/resources-root) (cfg/js-dir))]
+           (resp/content-type (static-resp rsc-name :root resource-root) "application/json")))
+
+    (GET "/img/:rsc-name"
+         [rsc-name]
+         (let [resource-root (ft/path-join (cfg/resources-root) (cfg/img-dir))]
+           (static-resp rsc-name :root resource-root)))))
+
+(defn- ticket-routes []
+  (routes
+    ;; ticket download
+    (context "/d/:ticket-id" [ticket-id]
+      (HEAD "/:filename" [ticket-id]
+            (controllers/file-info ticket-id))
+
+      (OPTIONS "/:filename" [ticket-id]
+            (controllers/file-options ticket-id))
+
+      (GET "/:filename" [ticket-id filename :as request]
+           (controllers/download-file ticket-id filename request))
+
+      (HEAD "/" [ticket-id]
+            (controllers/file-info ticket-id))
+
+      (OPTIONS "/" [ticket-id]
+            (controllers/file-options ticket-id))
+
+      (GET "/" [ticket-id :as request]
+           (controllers/download-ticket ticket-id request)))
+
+    ;; ticket info
+    (GET "/:ticket-id" [ticket-id :as request]
+         (resp/content-type (controllers/get-ticket ticket-id request) "text/html; charset=utf-8"))))
 
 (defroutes kifshare-routes
   (GET "/" [:as {{expecting :expecting} :params :as req}]
@@ -44,61 +109,14 @@
          (http-resp/internal-server-error (str "Hello from kifshare. Error: expecting " expecting "."))
          "Hello from kifshare."))
 
-  (GET "/favicon.ico" []
-       (static-resp (cfg/favicon-path)))
+  ;; static well-known location files
+  (well-known-routes)
 
-  (GET "/resources/:rsc-name"
-       [rsc-name]
-       (static-resp rsc-name))
+  ;; resources
+  (resources-routes)
 
-  (GET "/resources/fa/css/:rsc-name"
-       [rsc-name]
-       (let [resource-root (ft/path-join (cfg/resources-root) "fa/css")]
-         (resp/content-type (static-resp rsc-name :root resource-root) "text/css")))
-
-  (GET "/resources/fa/fonts/:rsc-name"
-       [rsc-name]
-       (let [resource-root (ft/path-join (cfg/resources-root) "fa/fonts")]
-         (static-resp rsc-name :root resource-root)))
-
-  (GET "/resources/css/:rsc-name"
-       [rsc-name]
-       (let [resource-root (ft/path-join (cfg/resources-root) (cfg/css-dir))]
-         (resp/content-type (static-resp rsc-name :root resource-root) "text/css")))
-
-  (GET "/resources/js/:rsc-name"
-       [rsc-name]
-       (let [resource-root (ft/path-join (cfg/resources-root) (cfg/js-dir))]
-         (resp/content-type (static-resp rsc-name :root resource-root) "application/json")))
-
-  (GET "/resources/img/:rsc-name"
-       [rsc-name]
-       (let [resource-root (ft/path-join (cfg/resources-root) (cfg/img-dir))]
-         (static-resp rsc-name :root resource-root)))
-
-  (GET "/robots.txt" []
-       (static-resp (cfg/robots-txt-path)))
-
-  (HEAD "/d/:ticket-id/:filename" [ticket-id]
-        (controllers/file-info ticket-id))
-
-  (OPTIONS "/d/:ticket-id/:filename" [ticket-id]
-        (controllers/file-options ticket-id))
-
-  (GET "/d/:ticket-id/:filename" [ticket-id filename :as request]
-       (controllers/download-file ticket-id filename request))
-
-  (HEAD "/d/:ticket-id" [ticket-id]
-        (controllers/file-info ticket-id))
-
-  (OPTIONS "/d/:ticket-id" [ticket-id]
-        (controllers/file-options ticket-id))
-
-  (GET "/d/:ticket-id" [ticket-id :as request]
-       (controllers/download-ticket ticket-id request))
-
-  (GET "/:ticket-id" [ticket-id :as request]
-       (resp/content-type (controllers/get-ticket ticket-id request) "text/html; charset=utf-8"))
+  ;; tickets
+  (ticket-routes)
 
   (route/not-found "Not found!"))
 
