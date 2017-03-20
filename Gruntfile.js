@@ -116,9 +116,6 @@ module.exports = function(grunt) {
       make_css_resources: {
         command: 'mkdir -p resources/css'
       },
-      make_flash_resources: {
-        command: 'mkdir -p resources/flash'
-      },
       make_img_resources: {
         command: 'mkdir -p resources/img'
       },
@@ -144,7 +141,7 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      files: ["ui/src/js/*.js", "ui/src/css/*.less", "ui/src/img/*", "ui/src/flash/*"],
+      files: ["ui/src/js/*.js", "ui/src/css/*.less", "ui/src/img/*"],
       tasks: ['build-resources-dev', 'copy:kifjs']
     },
     jshint: {
@@ -182,7 +179,7 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['jslint', 'qunit', 'concat', 'uglify']);
   //grunt.loadNpmTasks('watch');
 
-  grunt.registerTask('make-resources', ['shell:make_js_resources', 'shell:make_css_resources', 'shell:make_flash_resources', 'shell:make_img_resources']);
+  grunt.registerTask('make-resources', ['shell:make_js_resources', 'shell:make_css_resources', 'shell:make_img_resources']);
   grunt.registerTask('build-resources', ['jslint', 'make-resources', 'less', 'copy', 'uglify']);
   grunt.registerTask('build-resources-dev', ['jslint', 'make-resources', 'less', 'copy']);
   grunt.registerTask('build-clj', ['shell:lein_clean', 'shell:lein_deps', 'shell:lein_uberjar']);
