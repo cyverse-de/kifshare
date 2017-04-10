@@ -7,7 +7,7 @@
       (string/trim (:out (sh "git" "rev-parse" "HEAD")))
       ""))
 
-(defproject org.cyverse/kifshare "2.8.1-SNAPSHOT"
+(defproject org.cyverse/kifshare "2.12.0-SNAPSHOT"
   :description "CyVerse Quickshare for iRODS"
   :url "https://github.com/cyverse-de/kifshare"
 
@@ -21,7 +21,7 @@
                  [org.clojure/tools.logging "0.3.1"]
                  [hawk "0.2.11"]
                  [medley "0.5.5"]
-                 [org.cyverse/clj-jargon "2.8.0"
+                 [org.cyverse/clj-jargon "2.8.2"
                    :exclusions [[org.slf4j/slf4j-log4j12]
                                 [log4j]]]
                  [org.cyverse/service-logging "2.8.0"]
