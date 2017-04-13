@@ -1,0 +1,32 @@
+{{- with $base := (printf "configs/%s" (env "DE_ENV")) -}}
+{{ with $v := (key (printf "%s/irods/host" $base)) }}kifshare.irods.host = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/irods/port" $base)) }}kifshare.irods.port = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/irods/user" $base)) }}kifshare.irods.user = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/irods/pass" $base)) }}kifshare.irods.password = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/irods/home" $base)) }}kifshare.irods.home = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/irods/zone" $base)) }}kifshare.irods.zone = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/irods/resc" $base)) }}kifshare.irods.defaultResource = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/services/port" $base)) }}kifshare.app.port = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/kifshare/mode" $base)) }}kifshare.app.mode = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/kifshare/download-buffer-size" $base)) }}kifshare.app.download-buffer-size = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/kifshare/footer-text" $base)) }}kifshare.app.footer-text = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/kifshare/resources-root" $base)) }}kifshare.app.resources-root = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/kifshare/images-dir" $base)) }}kifshare.app.images-dir = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/kifshare/js-dir" $base)) }}kifshare.app.js-dir = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/kifshare/css-dir" $base)) }}kifshare.app.css-dir = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/kifshare/flash-dir" $base)) }}kifshare.app.flash-dir = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/kifshare/favicon-path" $base)) }}kifshare.app.favicon-path = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/kifshare/client-cache/scope" $base)) }}kifshare.app.client-cache-scope = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/kifshare/client-cache/max-age" $base)) }}kifshare.app.client-cache-max-age = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/kifshare/de-url" $base)) }}kifshare.app.de-url = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/kifshare/irods-url" $base)) }}kifshare.app.irods-url = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/kifshare/flags/de-import" $base)) }}kifshare.app.de-import-flags = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/kifshare/flags/curl" $base)) }}kifshare.app.curl-flags = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/kifshare/flags/wget" $base)) }}kifshare.app.wget-flags = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/kifshare/flags/iget" $base)) }}kifshare.app.iget-flags = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/kifshare/flags/iget" $base)) }}kifshare.app.iget-flags = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/kifshare/css-files" $base)) }}kifshare.app.css-files = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/kifshare/javascript-files" $base)) }}kifshare.app.javascript-files = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/amqp/uri" $base)) }}kifshare.app.amqp-uri = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/kifshare/de/base" $base)) }}kifshare.app.de-url = {{ $v }}{{ end }}
+{{- end -}}
