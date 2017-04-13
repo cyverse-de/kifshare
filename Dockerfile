@@ -24,7 +24,7 @@ RUN cp target/kifshare-standalone.jar .
 
 RUN ln -s "/usr/bin/java" "/bin/kifshare"
 
-ENTRYPOINT ["run-service", "kifshare", "-Dlogback.configurationFile=/etc/iplant/de/logging/kifshare-logging.xml", "-cp", ".:resources:kifshare-standalone.jar", "kifshare.core"]
+ENTRYPOINT ["run-service", "-Dlogback.configurationFile=/etc/iplant/de/logging/kifshare-logging.xml", "-cp", ".:resources:kifshare-standalone.jar", "kifshare.core"]
 
 ARG git_commit=unknown
 ARG version=unknown
