@@ -27,6 +27,6 @@
 {{ with $v := (key (printf "%s/kifshare/flags/iget" $base)) }}kifshare.app.iget-flags = {{ $v }}{{ end }}
 {{ with $v := (key (printf "%s/kifshare/css-files" $base)) }}kifshare.app.css-files = {{ $v }}{{ end }}
 {{ with $v := (key (printf "%s/kifshare/javascript-files" $base)) }}kifshare.app.javascript-files = {{ $v }}{{ end }}
-{{ with $v := (key (printf "%s/amqp/uri" $base)) }}kifshare.app.amqp-uri = {{ $v }}{{ end }}
+{{ with $v := (key (printf "%s/amqp/uri" $base)) }}kifshare.amqp.uri = {{ $v }}{{ end }}
 {{ with $v := (key (printf "%s/kifshare/de/base" $base)) }}kifshare.app.de-url = {{ $v }}{{ end }}
 {{- end -}}
