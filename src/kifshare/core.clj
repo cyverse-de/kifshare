@@ -13,7 +13,7 @@
             [ring.util.response :as resp]
             [ring.util.http-response :as http-resp]
             [kifshare.config :as cfg]
-            [kifshare.controllers :as controllers]
+            [kifshare.tickets-controllers :as t-c]
             [kifshare.amqp :as amqp]
             [kifshare.events :as events]
             [kifshare.ui-template :as ui]
@@ -82,26 +82,26 @@
     ;; ticket download
     (context "/d/:ticket-id" [ticket-id]
       (HEAD "/:filename" [ticket-id]
-            (controllers/file-info ticket-id))
+            (t-c/file-info ticket-id))
 
       (OPTIONS "/:filename" [ticket-id]
-            (controllers/file-options ticket-id))
+            (t-c/file-options ticket-id))
 
       (GET "/:filename" [ticket-id filename :as request]
-           (controllers/download-file ticket-id filename request))
+           (t-c/download-file ticket-id filename request))
 
       (HEAD "/" [ticket-id]
-            (controllers/file-info ticket-id))
+            (t-c/file-info ticket-id))
 
       (OPTIONS "/" [ticket-id]
-            (controllers/file-options ticket-id))
+            (t-c/file-options ticket-id))
 
       (GET "/" [ticket-id :as request]
-           (controllers/download-ticket ticket-id request)))
+           (t-c/download-ticket ticket-id request)))
 
     ;; ticket info
     (GET "/:ticket-id" [ticket-id :as request]
-         (resp/content-type (controllers/get-ticket ticket-id request) "text/html; charset=utf-8"))))
+         (resp/content-type (t-c/get-ticket ticket-id request) "text/html; charset=utf-8"))))
 
 (defroutes kifshare-routes
   (GET "/" [:as {{expecting :expecting} :params :as req}]

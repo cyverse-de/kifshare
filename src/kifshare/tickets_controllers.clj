@@ -1,4 +1,4 @@
-(ns kifshare.controllers
+(ns kifshare.tickets-controllers
   (:use [ring.util.response :only [redirect]]
         [kifshare.config :only [jargon-config]]
         [kifshare.ui-template :only [landing-page]]
