@@ -103,6 +103,12 @@
     (GET "/:ticket-id" [ticket-id :as request]
          (resp/content-type (t-c/get-ticket ticket-id request) "text/html; charset=utf-8"))))
 
+(defn- anon-files-routes []
+  (context "/anon-files" []
+    (HEAD "/*" [:as req] nil)
+    (GET "/*" [:as req] nil)
+    (OPTIONS "/*" [:as req] nil)))
+
 (defroutes kifshare-routes
   (GET "/" [:as {{expecting :expecting} :params :as req}]
        (if (and expecting (not= expecting "kifshare"))
@@ -117,6 +123,9 @@
 
   ;; tickets
   (ticket-routes)
+
+  ;; anonymous access
+  (anon-files-routes)
 
   (route/not-found "Not found!"))
 
