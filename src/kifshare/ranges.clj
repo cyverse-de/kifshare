@@ -71,12 +71,12 @@
 
 (defn download-byte-range
   "Returns a response map containing a byte range from a file. Assumes validation has already been performed."
-  [cm filename filesize start-byte end-byte]
+  [cm path filesize start-byte end-byte]
   (log/debug "entered kifshare.ranges/download-byte-range")
 
   (if (or (> start-byte end-byte)
           (>= start-byte filesize))
     (unsatisfiable-resp filesize)
     (do
-      (log/warn "Download file range:" start-byte "-" end-byte "for file" filename)
-      (range-resp (chunk-stream cm filename start-byte end-byte) filesize start-byte end-byte))))
+      (log/warn "Download file range:" start-byte "-" end-byte "for file" path)
+      (range-resp (chunk-stream cm path start-byte end-byte) filesize start-byte end-byte))))
