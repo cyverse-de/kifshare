@@ -108,15 +108,10 @@
   [ticket-id]
   (jinit/with-jargon (jargon-config) [cm]
     (let [ticket-info (tickets/ticket-info cm ticket-id)]
-      {:status  200
-       :headers {"Content-Length"      (str (:filesize ticket-info))
-                 "Content-Disposition" (str "filename=\"" (:filename ticket-info) "\"")
-                 "Accept-Ranges"       "bytes"}})))
+      (ranges/head-resp (:filename ticket-info) (:filesize ticket-info)))))
 
 (defn file-options
   [ticket-id]
   (jinit/with-jargon (jargon-config) [cm]
     (let [ticket-info (tickets/ticket-info cm ticket-id)]
-      {:status  200
-       :headers {"Accept-Ranges"       "bytes"
-                 "Allow"               "GET, HEAD"}})))
+      (ranges/options-resp))))

@@ -5,7 +5,7 @@
             [clj-jargon.paging :as paging]
             [clojure-commons.file-utils :as ft]
             [clojure.tools.logging :as log]
-            [kifshare.inputs :refer [chunk-stream]])
+            [kifshare.ranges :as ranges])
   (:use [slingshot.slingshot :only [try+ throw+]]
         [kifshare.errors]
         [kifshare.config :only [username]]
@@ -75,17 +75,4 @@
   "Returns a response map containing a byte range from a file. Assumes check-ticket has been called already, probably by ticket-info"
   [cm ticket-info start-byte end-byte]
   (log/debug "entered kifshare.tickets/download-byte-range")
-
-  (if (or (> start-byte end-byte)
-          (>= start-byte (Long/parseLong (:filesize ticket-info))))
-    {:status 416
-     :body "The requested range is not satisfiable."
-     :headers {"Content-Range" (str "bytes */" (:filesize ticket-info))
-               "Accept-Ranges" "bytes"}}
-    (do
-      (log/warn "Download file range:" start-byte "-" end-byte "for ticket" (:ticket-id ticket-info))
-      {:status 206
-       :body   (chunk-stream cm (:abspath ticket-info) start-byte end-byte)
-       :headers
-       {"Content-Range" (str "bytes " start-byte "-" end-byte "/" (:filesize ticket-info))
-        "Accept-Ranges" "bytes"}})))
+  (ranges/download-byte-range cm (:abspath ticket-info) (Long/parseLong (:filesize ticket-info)) start-byte end-byte))

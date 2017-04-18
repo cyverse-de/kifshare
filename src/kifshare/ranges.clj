@@ -1,4 +1,6 @@
-(ns kifshare.ranges)
+(ns kifshare.ranges
+  (:require [clojure.tools.logging :as log]
+            [kifshare.inputs :refer [chunk-stream]]))
 
 (defn range-request?
   [ring-request]
@@ -38,3 +40,43 @@
                         (longify (nth range-matches 3))
                         last-byte)]
     [(max 0 start) (min end last-byte)]))
+
+(defn head-resp
+  [filename filesize]
+  {:status  200
+   :headers {"Content-Length"      (str filesize)
+             "Content-Disposition" (str "filename=\"" filename "\"")
+             "Accept-Ranges"       "bytes"}})
+
+(defn options-resp
+  []
+  {:status  200
+   :headers {"Accept-Ranges"       "bytes"
+             "Allow"               "GET, HEAD"}})
+
+(defn unsatisfiable-resp
+  [filesize]
+  {:status 416
+   :body "The requested range is not satisfiable."
+   :headers {"Content-Range" (str "bytes */" filesize)
+             "Accept-Ranges" "bytes"}})
+
+(defn range-resp
+  [body filesize start-byte end-byte]
+  {:status 206
+   :body   body
+   :headers
+   {"Content-Range" (str "bytes " start-byte "-" end-byte "/" filesize)
+    "Accept-Ranges" "bytes"}})
+
+(defn download-byte-range
+  "Returns a response map containing a byte range from a file. Assumes validation has already been performed."
+  [cm filename filesize start-byte end-byte]
+  (log/debug "entered kifshare.ranges/download-byte-range")
+
+  (if (or (> start-byte end-byte)
+          (>= start-byte filesize))
+    (unsatisfiable-resp filesize)
+    (do
+      (log/warn "Download file range:" start-byte "-" end-byte "for file" filename)
+      (range-resp (chunk-stream cm filename start-byte end-byte) filesize start-byte end-byte))))
