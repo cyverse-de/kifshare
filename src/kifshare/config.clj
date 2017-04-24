@@ -141,6 +141,10 @@
   []
   (or (get @props "kifshare.irods.defaultResource") ""))
 
+(defn irods-anonymous-user
+  []
+  (or (get @props "kifshare.irods.anon-user") "anonymous"))
+
 (defn amqp-uri
   []
   (or (get @props "kifshare.amqp.uri") "amqp://guest:guest@rabbit:5672/"))
