@@ -14,6 +14,7 @@
             [ring.util.http-response :as http-resp]
             [kifshare.config :as cfg]
             [kifshare.tickets-controllers :as t-c]
+            [kifshare.anon-controllers :as a-c]
             [kifshare.amqp :as amqp]
             [kifshare.events :as events]
             [kifshare.ui-template :as ui]
@@ -105,9 +106,9 @@
 
 (defn- anon-files-routes []
   (context "/anon-files" []
-    (HEAD "/*" [:as req] nil)
-    (GET "/*" [:as req] nil)
-    (OPTIONS "/*" [:as req] nil)))
+    (HEAD ":filepath{.*}" [filepath] nil)
+    (GET ":filepath{.*}" [filepath] nil)
+    (OPTIONS ":filepath{.*}" [filepath] (a-c/handle-options filepath))))
 
 (defroutes kifshare-routes
   (GET "/" [:as {{expecting :expecting} :params :as req}]
