@@ -14,6 +14,7 @@
             [ring.util.http-response :as http-resp]
             [kifshare.config :as cfg]
             [kifshare.tickets-controllers :as t-c]
+            [kifshare.anon-controllers :as a-c]
             [kifshare.amqp :as amqp]
             [kifshare.events :as events]
             [kifshare.ui-template :as ui]
@@ -103,6 +104,12 @@
     (GET "/:ticket-id" [ticket-id :as request]
          (resp/content-type (t-c/get-ticket ticket-id request) "text/html; charset=utf-8"))))
 
+(defn- anon-files-routes []
+  (context "/anon-files" []
+    (HEAD ":filepath{.*}" [filepath] (a-c/handle-head filepath))
+    (GET ":filepath{.*}" [filepath :as req] (a-c/handle-get filepath req))
+    (OPTIONS ":filepath{.*}" [filepath] (a-c/handle-options filepath))))
+
 (defroutes kifshare-routes
   (GET "/" [:as {{expecting :expecting} :params :as req}]
        (if (and expecting (not= expecting "kifshare"))
@@ -117,6 +124,9 @@
 
   ;; tickets
   (ticket-routes)
+
+  ;; anonymous access
+  (anon-files-routes)
 
   (route/not-found "Not found!"))
 
