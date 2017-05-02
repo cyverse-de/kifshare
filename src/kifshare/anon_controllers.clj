@@ -6,6 +6,7 @@
             [clojure.tools.logging :as log]
             [clj-jargon.init :as jinit]
             [clj-jargon.item-info :as info]
+            [clj-jargon.item-ops :as ops]
             [clj-jargon.permissions :as perms]
             [clojure-commons.file-utils :as ft]
             [kifshare.errors :as errors]))
@@ -35,6 +36,15 @@
                :not-readable {:status 403 :body (cheshire/encode {:error_code ERR_NOT_READABLE :message "Path not readable."})}
                :ok           (do ~@body)
                {:status 500 :body (cheshire/encode (unchecked {:message "Unknown file status."}))}))))
+
+(defn handle-get
+  [filepath req]
+  (validated-with-jargon filepath :auto-close false [cm]
+    (let [filesize (info/file-size cm filepath)]
+    (if (and (ranges/range-request? req) (ranges/valid-range? req))
+      (let [[start-byte end-byte] (ranges/extract-range req filesize)]
+        (ranges/download-byte-range cm filepath filesize start-byte end-byte))
+      (ranges/non-range-resp (ops/input-stream cm filepath) (ft/basename filepath) filesize)))))
 
 (defn handle-head
   [filepath]

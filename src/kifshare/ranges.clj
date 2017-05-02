@@ -61,6 +61,13 @@
    :headers {"Content-Range" (str "bytes */" filesize)
              "Accept-Ranges" "bytes"}})
 
+(defn non-range-resp
+  [body filename filesize & {:keys [attachment] :or {attachment false}}]
+  {:status  200
+   :body    body
+   :headers {"Content-Length"      (str filesize)
+             "Content-Disposition" (str (if attachment "attachment; " "") "filename=\"" filename "\"")}})
+
 (defn range-resp
   [body filesize start-byte end-byte]
   {:status 206

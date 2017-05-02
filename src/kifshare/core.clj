@@ -107,7 +107,7 @@
 (defn- anon-files-routes []
   (context "/anon-files" []
     (HEAD ":filepath{.*}" [filepath] (a-c/handle-head filepath))
-    (GET ":filepath{.*}" [filepath] nil)
+    (GET ":filepath{.*}" [filepath :as req] (a-c/handle-get filepath req))
     (OPTIONS ":filepath{.*}" [filepath] (a-c/handle-options filepath))))
 
 (defroutes kifshare-routes
