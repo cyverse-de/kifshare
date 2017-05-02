@@ -7,6 +7,7 @@
             [clj-jargon.init :as jinit]
             [clj-jargon.item-info :as info]
             [clj-jargon.permissions :as perms]
+            [clojure-commons.file-utils :as ft]
             [kifshare.errors :as errors]))
 
 (defn- validation-info
@@ -24,12 +25,23 @@
 
     :else :ok))
 
+(defmacro validated-with-jargon
+  [filepath & params]
+  (let [[opts [[cm-sym] & body]] (split-with #(not (vector? %)) params)]
+    `(jinit/with-jargon (jargon-config) ~@opts [~cm-sym]
+       (case (validation-info ~cm-sym ~filepath)
+               :not-exists   {:status 404 :body (cheshire/encode {:error_code ERR_NOT_FOUND :message "Path not found."})}
+               :not-file     {:status 403 :body (cheshire/encode {:error_code ERR_NOT_A_FILE :message "Path not a file."})}
+               :not-readable {:status 403 :body (cheshire/encode {:error_code ERR_NOT_READABLE :message "Path not readable."})}
+               :ok           (do ~@body)
+               {:status 500 :body (cheshire/encode (unchecked {:message "Unknown file status."}))}))))
+
+(defn handle-head
+  [filepath]
+  (validated-with-jargon filepath [cm]
+    (ranges/head-resp (ft/basename filepath) (info/file-size cm filepath))))
+
 (defn handle-options
   [filepath]
-  (jinit/with-jargon (jargon-config) [cm]
-    (case (validation-info cm filepath)
-      :not-exists   {:status 404 :body (cheshire/encode {:error_code ERR_NOT_FOUND :message "Path not found."})}
-      :not-file     {:status 403 :body (cheshire/encode {:error_code ERR_NOT_A_FILE :message "Path not a file."})}
-      :not-readable {:status 403 :body (cheshire/encode {:error_code ERR_NOT_READABLE :message "Path not readable."})}
-      :ok           (ranges/options-resp)
-      {:status 500 :body (cheshire/encode (unchecked {:message "Unknown file status."}))})))
+  (validated-with-jargon filepath [cm]
+    (ranges/options-resp)))

@@ -106,7 +106,7 @@
 
 (defn- anon-files-routes []
   (context "/anon-files" []
-    (HEAD ":filepath{.*}" [filepath] nil)
+    (HEAD ":filepath{.*}" [filepath] (a-c/handle-head filepath))
     (GET ":filepath{.*}" [filepath] nil)
     (OPTIONS ":filepath{.*}" [filepath] (a-c/handle-options filepath))))
 
