@@ -12,7 +12,7 @@
 @menu-height: 50px;
 
 .ellipsis () {
-  overflow:      hidden;
+  //overflow:      hidden;
   text-overflow: ellipsis;
   white-space:   nowrap;
 }
@@ -29,7 +29,7 @@ body { background: @bg-color; }
 .menu-item () {
   float: left;
   width: (@menu-width / 3);
-  height: @menu-height;
+  height: @menu-height - 22px;
 }
 
 .menu-content () {
@@ -47,8 +47,9 @@ body { background: @bg-color; }
   height:         @menu-height;
   position:       fixed;
   z-index:        100;
-  padding-top:    10px;
-  padding-bottom: 10px;
+  // padding-top:    10px;
+  // padding-bottom: 10px;
+  border-bottom:  5px solid #57cbea;
 
   ul {
     padding: 0;
@@ -62,7 +63,6 @@ body { background: @bg-color; }
 
         h1 {
           .menu-content;
-          .ellipsis;
           color: @download-text-color;
         }
 
@@ -71,7 +71,7 @@ body { background: @bg-color; }
           text-decoration: none;
           #download-link-area {
             text-align:    center;
-            height:        50px;
+            height:        @menu-height - 22px;
             width:         50px;
             float:         right;
             margin-right:  10px;
@@ -79,7 +79,7 @@ body { background: @bg-color; }
             display:       block;
 
             i {
-              margin-top: 7px;
+              margin-top: 10px;
             }
 
             &:hover {
@@ -94,7 +94,7 @@ body { background: @bg-color; }
 
         img {
           margin-left: 10px;
-          height: 50px;
+          height: 28px;
         }
       }
 
