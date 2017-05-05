@@ -1,6 +1,11 @@
-<html>
+<html lang="en" xml:lang="en" xmlns= "http://www.w3.org/1999/xhtml">
   <head>
     <title>{{{filename}}}</title>
+
+    <meta charset="UTF-8">
+    <meta name="google" content="notranslate">
+    <meta http-equiv="Content-Language" content="en">
+
     <link href="resources/css/reset.css" rel="stylesheet" type="text/css" />
     <link href="resources/css/960.css" rel="stylesheet" type="text/css" />
     <link href="resources/css/balloon.min.css" rel="stylesheet" type="text/css" />
