@@ -44,7 +44,7 @@
     (if (and (ranges/range-request? req) (ranges/valid-range? req))
       (let [[start-byte end-byte] (ranges/extract-range req filesize)]
         (ranges/download-byte-range cm filepath filesize start-byte end-byte))
-      (ranges/non-range-resp (ops/input-stream cm filepath) (ft/basename filepath) filesize)))))
+      (ranges/non-range-resp (ops/input-stream cm filepath) (ft/basename filepath) filepath (info/lastmod-date cm filepath) filesize)))))
 
 (defn handle-head
   [filepath]

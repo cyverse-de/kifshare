@@ -67,7 +67,7 @@
 
   (let [ti (ticket-info cm ticket-id)]
     (log/warn "Dowloading file associated with ticket " ticket-id)
-    (ranges/non-range-resp (jtickets/ticket-proxy-input-stream cm (username) ticket-id) (:filename ti) (Long/parseLong (:filesize ti)) :attachment true)))
+    (ranges/non-range-resp (jtickets/ticket-proxy-input-stream cm (username) ticket-id) (:filename ti) (:abspath ti) (:lastmod ti) (Long/parseLong (:filesize ti)) :attachment true)))
 
 (defn download-byte-range
   "Returns a response map containing a byte range from a file. Assumes check-ticket has been called already, probably by ticket-info"

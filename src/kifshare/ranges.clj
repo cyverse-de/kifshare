@@ -1,5 +1,6 @@
 (ns kifshare.ranges
   (:require [clojure.tools.logging :as log]
+            [clj-jargon.item-info :as info]
             [kifshare.inputs :refer [chunk-stream]]))
 
 (defn range-request?
@@ -61,20 +62,30 @@
    :headers {"Content-Range" (str "bytes */" filesize)
              "Accept-Ranges" "bytes"}})
 
+(defn- base-headers
+  [filepath lastmod]
+  {"Cache-Control"    "no-cache"
+   "ETag"             (str "W/" lastmod)
+   "Expires"          "0"
+   "Vary"             "*"
+   "Content-Location" filepath})
+
 (defn non-range-resp
-  [body filename filesize & {:keys [attachment] :or {attachment false}}]
+  [body filename filepath lastmod filesize & {:keys [attachment] :or {attachment false}}]
   {:status  200
    :body    body
-   :headers {"Content-Length"      (str filesize)
-             "Content-Disposition" (str (if attachment "attachment; " "") "filename=\"" filename "\"")}})
+   :headers (assoc (base-headers filepath lastmod)
+                   "Content-Length"      (str filesize)
+                   "Content-Disposition" (str (if attachment "attachment; " "") "filename=\"" filename "\""))})
 
 (defn range-resp
-  [body filesize start-byte end-byte]
+  [body filepath lastmod filesize start-byte end-byte]
   {:status 206
    :body   body
    :headers
-   {"Content-Range" (str "bytes " start-byte "-" end-byte "/" filesize)
-    "Accept-Ranges" "bytes"}})
+   (assoc (base-headers filepath lastmod)
+          "Content-Range" (str "bytes " start-byte "-" end-byte "/" filesize)
+          "Accept-Ranges" "bytes")})
 
 (defn download-byte-range
   "Returns a response map containing a byte range from a file. Assumes validation has already been performed."
@@ -86,4 +97,4 @@
     (unsatisfiable-resp filesize)
     (do
       (log/warn "Download file range:" start-byte "-" end-byte "for file" path)
-      (range-resp (chunk-stream cm path start-byte end-byte) filesize start-byte end-byte))))
+      (range-resp (chunk-stream cm path start-byte end-byte) path (info/lastmod-date cm path) filesize start-byte end-byte))))
