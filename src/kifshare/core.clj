@@ -104,11 +104,15 @@
     (GET "/:ticket-id" [ticket-id :as request]
          (resp/content-type (t-c/get-ticket ticket-id request) "text/html; charset=utf-8"))))
 
+(defn- collapse-slashes
+  [filepath]
+  (string/replace filepath #"/+" "/"))
+
 (defn- anon-files-routes []
   (context "/anon-files" []
-    (HEAD ":filepath{.*}" [filepath] (a-c/handle-head filepath))
-    (GET ":filepath{.*}" [filepath :as req] (a-c/handle-get filepath req))
-    (OPTIONS ":filepath{.*}" [filepath] (a-c/handle-options filepath))))
+    (HEAD ":filepath{.*}" [filepath] (a-c/handle-head (collapse-slashes filepath)))
+    (GET ":filepath{.*}" [filepath :as req] (a-c/handle-get (collapse-slashes filepath) req))
+    (OPTIONS ":filepath{.*}" [filepath] (a-c/handle-options (collapse-slashes filepath)))))
 
 (defroutes kifshare-routes
   (GET "/" [:as {{expecting :expecting} :params :as req}]
