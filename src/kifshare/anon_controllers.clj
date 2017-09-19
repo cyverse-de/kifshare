@@ -53,5 +53,4 @@
 
 (defn handle-options
   [filepath]
-  (validated-with-jargon filepath [cm]
-    (ranges/options-resp)))
+  (ranges/options-resp))

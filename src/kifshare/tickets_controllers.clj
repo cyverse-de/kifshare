@@ -112,6 +112,4 @@
 
 (defn file-options
   [ticket-id]
-  (jinit/with-jargon (jargon-config) [cm]
-    (let [ticket-info (tickets/ticket-info cm ticket-id)]
-      (ranges/options-resp))))
+  (ranges/options-resp))
