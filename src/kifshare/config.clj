@@ -182,8 +182,10 @@
     false))
 
 (def jgcfg (atom nil))
+(def anoncfg (atom nil))
 
 (defn jargon-config [] @jgcfg)
+(defn anon-config [] @anoncfg)
 
 (defn jargon-init
   []
@@ -193,6 +195,15 @@
            (irods-port)
            (username)
            (irods-password)
+           (irods-home)
+           (irods-zone)
+           (irods-default-resource)))
+  (reset! anoncfg
+          (jinit/init
+           (irods-host)
+           (irods-port)
+           (irods-anonymous-user)
+           ""
            (irods-home)
            (irods-zone)
            (irods-default-resource))))

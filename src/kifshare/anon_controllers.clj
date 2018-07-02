@@ -1,5 +1,5 @@
 (ns kifshare.anon-controllers
-  (:use [kifshare.config :only [jargon-config irods-anonymous-user]]
+  (:use [kifshare.config :only [anon-config irods-anonymous-user]]
         [clojure-commons.error-codes])
   (:require [kifshare.ranges :as ranges]
             [cheshire.core :as cheshire]
@@ -29,7 +29,7 @@
 (defmacro validated-with-jargon
   [filepath & params]
   (let [[opts [[cm-sym] & body]] (split-with #(not (vector? %)) params)]
-    `(jinit/with-jargon (jargon-config) ~@opts [~cm-sym]
+    `(jinit/with-jargon (anon-config) ~@opts [~cm-sym]
        (case (validation-info ~cm-sym ~filepath)
                :not-exists   {:status 404 :body (cheshire/encode {:error_code ERR_NOT_FOUND :message "Path not found."})}
                :not-file     {:status 403 :body (cheshire/encode {:error_code ERR_NOT_A_FILE :message "Path not a file."})}
