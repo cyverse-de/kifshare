@@ -2,7 +2,7 @@ FROM clojure:lein-alpine
 
 WORKDIR /usr/src/app
 
-RUN apk add --no-cache --update git nodejs-lts && \
+RUN apk add --no-cache --update git nodejs-lts npm && \
     rm -rf /var/cache/apk
 
 RUN npm install -g grunt-cli
