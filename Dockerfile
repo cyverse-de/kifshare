@@ -1,15 +1,13 @@
-FROM discoenv/clojure-base:master
+FROM clojure:lein-alpine
 
-ENV CONF_TEMPLATE=/usr/src/app/kifshare.properties.tmpl
-ENV CONF_FILENAME=kifshare.properties
-ENV PROGRAM=kifshare
+WORKDIR /usr/src/app
 
-RUN apk add --no-cache --update nodejs-lts && \
+RUN apk add --no-cache --update git nodejs-lts && \
     rm -rf /var/cache/apk
 
-VOLUME ["/etc/iplant/de"]
-
 RUN npm install -g grunt-cli
+
+RUN ln -s "/usr/bin/java" "/bin/kifshare"
 
 COPY project.clj /usr/src/app/
 RUN lein deps
@@ -22,9 +20,8 @@ RUN grunt build-resources
 RUN lein uberjar
 RUN cp target/kifshare-standalone.jar .
 
-RUN ln -s "/usr/bin/java" "/bin/kifshare"
-
-ENTRYPOINT ["run-service", "-Dlogback.configurationFile=/etc/iplant/de/logging/kifshare-logging.xml", "-cp", ".:resources:kifshare-standalone.jar", "kifshare.core"]
+ENTRYPOINT ["kifshare", "-Dlogback.configurationFile=/etc/iplant/de/logging/kifshare-logging.xml", "-cp", ".:resources:kifshare-standalone.jar", "kifshare.core"]
+CMD ["--help"]
 
 ARG git_commit=unknown
 ARG version=unknown
