@@ -10,6 +10,7 @@
   (:require [clojure-commons.file-utils :as ft]
             [clojure.tools.logging :as log]
             [compojure.route :as route]
+            [ring.logger :as logger]
             [ring.util.response :as resp]
             [ring.util.http-response :as http-resp]
             [kifshare.config :as cfg]
@@ -199,4 +200,4 @@
                                       (ui/read-template)))}])
           (log/warn "Configured listen port is: " port)
           (require 'ring.adapter.jetty)
-          ((eval 'ring.adapter.jetty/run-jetty) app {:port port}))))))
+          ((eval 'ring.adapter.jetty/run-jetty) (logger/wrap-with-logger app) {:port port}))))))

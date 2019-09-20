@@ -10,7 +10,8 @@
         [kifshare.errors]
         [kifshare.config :only [username]]
         [ring.util.response :only [status]]
-        [clojure-commons.error-codes]))
+        [clojure-commons.error-codes]
+        [debug-utils.log-time :only [log-time]]))
 
 (defn check-ticket
   "Makes sure that the ticket actually exists, is not expired,
@@ -65,12 +66,26 @@
   [cm ticket-id]
   (log/debug "entered kifshare.tickets/download")
 
-  (let [ti (ticket-info cm ticket-id)]
+  (let [ti (log-time (str "obtaining ticket info for " ticket-id) (ticket-info cm ticket-id))]
     (log/warn "Dowloading file associated with ticket " ticket-id)
-    (ranges/non-range-resp (jtickets/ticket-proxy-input-stream cm (username) ticket-id) (:filename ti) (:abspath ti) (:lastmod ti) (Long/parseLong (:filesize ti)) :attachment true)))
+    (log-time
+     (str "opening the file download stream for " ticket-id)
+     (ranges/non-range-resp
+      (jtickets/ticket-proxy-input-stream cm (username) ticket-id)
+      (:filename ti)
+      (:abspath ti)
+      (:lastmod ti)
+      (Long/parseLong (:filesize ti))
+      :attachment true))))
 
 (defn download-byte-range
-  "Returns a response map containing a byte range from a file. Assumes check-ticket has been called already, probably by ticket-info"
+  "Returns a response map containing a byte range from a file. Assumes check-ticket has been called already, probably
+   by ticket-info"
   [cm ticket-info start-byte end-byte]
   (log/debug "entered kifshare.tickets/download-byte-range")
-  (ranges/download-byte-range cm (:abspath ticket-info) (Long/parseLong (:filesize ticket-info)) start-byte end-byte))
+  (ranges/download-byte-range
+   cm
+   (:abspath ticket-info)
+   (Long/parseLong (:filesize ticket-info))
+   start-byte
+   end-byte))
