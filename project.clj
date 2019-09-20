@@ -24,6 +24,7 @@
                  [org.cyverse/clj-jargon "2.8.9"
                    :exclusions [[org.slf4j/slf4j-log4j12]
                                 [log4j]]]
+                 [org.cyverse/debug-utils "2.8.1"]
                  [org.cyverse/service-logging "2.8.0"]
                  [org.cyverse/clojure-commons "2.8.0"]
                  [org.cyverse/common-cli "2.8.1"]
@@ -39,7 +40,8 @@
                  [slingshot "0.12.2"]
                  [compojure "1.5.0"]
                  [de.ubercode.clostache/clostache "1.4.0"]
-                 [com.cemerick/url "0.1.1" :exclusions [com.cemerick/clojurescript.test]]]
+                 [com.cemerick/url "0.1.1" :exclusions [com.cemerick/clojurescript.test]]
+                 [ring-logger "1.0.1"]]
 
   :eastwood {:exclude-namespaces [:test-paths]
              :linters [:wrong-arity :wrong-ns-form :wrong-pre-post :wrong-tag :misplaced-docstrings]}
