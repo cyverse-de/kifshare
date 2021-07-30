@@ -31,7 +31,7 @@ spec:
                 path: kifshare.properties
       containers:
       - name: kifshare
-        image: discoenv/kifshare
+        image: harbor.cyverse.org/de/kifshare
         volumeMounts:
           - name: localtime
             mountPath: /etc/localtime
