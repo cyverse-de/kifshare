@@ -21,11 +21,12 @@
                  [org.clojure/tools.logging "0.3.1"]
                  [hawk "0.2.11"]
                  [medley "0.5.5"]
-                 [org.cyverse/clj-jargon "2.8.9"
+                 [org.cyverse/clj-jargon "3.0.0"
                    :exclusions [[org.slf4j/slf4j-log4j12]
                                 [log4j]]]
                  [org.cyverse/debug-utils "2.8.1"]
-                 [org.cyverse/service-logging "2.8.0"]
+                 [org.cyverse/service-logging "2.8.2"]
+                 [net.logstash.logback/logstash-logback-encoder "4.11"]
                  [org.cyverse/clojure-commons "2.8.0"]
                  [org.cyverse/common-cli "2.8.1"]
                  [org.cyverse/event-messages "0.0.1"]
