@@ -58,4 +58,4 @@
             [lein-ring "0.7.5"]]
 
   :main ^:skip-aot kifshare.core
-  :jvm-opts ["-Dlogback.configurationFile=/etc/iplant/de/logging/kifshare-logging.xml"])
+  :jvm-opts ["-Dlogback.configurationFile=/etc/iplant/de/logging/kifshare-logging.xml" "-javaagent:./opentelemetry-javaagent.jar" "-Dotel.resource.attributes=service.name=kifshare"])
