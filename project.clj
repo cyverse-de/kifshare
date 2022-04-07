@@ -17,7 +17,7 @@
   :manifest {"Git-Ref" ~(git-ref)}
   :uberjar-name "kifshare-standalone.jar"
 
-  :dependencies [[org.clojure/clojure "1.8.0"]
+  :dependencies [[org.clojure/clojure "1.10.3"]
                  [org.clojure/tools.logging "0.3.1"]
                  [hawk "0.2.11"]
                  [medley "0.5.5"]

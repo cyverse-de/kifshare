@@ -1,13 +1,14 @@
-FROM clojure:openjdk-17-lein-alpine
+FROM clojure:openjdk-17-lein
 
 WORKDIR /usr/src/app
 
-RUN apk add --no-cache --update git nodejs-lts npm && \
-    rm -rf /var/cache/apk
+#RUN apk add --no-cache --update git nodejs-lts npm && \
+#    rm -rf /var/cache/apk
+RUN apt update && apt install -y nodejs npm
 
 RUN npm install -g grunt-cli
 
-RUN ln -s "/opt/openjdk-17/bin/java" "/bin/kifshare"
+RUN ln -s "/usr/local/openjdk-17/bin/java" "/bin/kifshare"
 
 ENV OTEL_TRACES_EXPORTER none
 
