@@ -21,7 +21,7 @@
                  [org.clojure/tools.logging "0.3.1"]
                  [hawk "0.2.11"]
                  [medley "0.5.5"]
-                 [org.cyverse/clj-jargon "3.0.0"
+                 [org.cyverse/clj-jargon "3.0.3"
                    :exclusions [[org.slf4j/slf4j-log4j12]
                                 [log4j]]]
                  [org.cyverse/debug-utils "2.8.1"]
