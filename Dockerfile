@@ -20,6 +20,9 @@ COPY . /usr/src/app
 
 RUN npm install
 RUN grunt build-resources
+COPY ui/fa resources/
+COPY ui/src resources/
+COPY ui/ui.xml resources/
 RUN lein uberjar
 RUN cp target/kifshare-standalone.jar .
 
