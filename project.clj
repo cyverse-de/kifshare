@@ -19,14 +19,14 @@
 
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [org.clojure/tools.logging "1.3.0"]
+                 [ch.qos.logback/logback-classic "1.5.3"]
+                 [net.logstash.logback/logstash-logback-encoder "7.4"]
                  [hawk "0.2.11"]
                  [medley "1.4.0"]
                  [org.cyverse/clj-jargon "3.1.0"
                    :exclusions [[org.slf4j/slf4j-log4j12]
                                 [log4j]]]
                  [org.cyverse/debug-utils "2.8.1"]
-                 [org.cyverse/service-logging "2.8.3"]
-                 [net.logstash.logback/logstash-logback-encoder "7.4"]
                  [org.cyverse/clojure-commons "2.8.0"]
                  [org.cyverse/common-cli "2.8.1"]
                  [org.cyverse/event-messages "0.0.1"]

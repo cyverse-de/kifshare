@@ -22,7 +22,6 @@
             [clojure.string :as string]
             [common-cli.core :as ccli]
             [me.raynes.fs :as fs]
-            [service-logging.thread-context :as tc]
             [hawk.core :as hawk]))
 
 (defn- keep-alive
@@ -180,7 +179,7 @@
 
 (defn -main
   [& args]
-  (tc/with-logging-context svc-info
+  
     (let [{:keys [options]} (ccli/handle-args svc-info args cli-options)]
       (when-not (fs/exists? (:config options))
         (ccli/exit 1 (str "The config file does not exist.")))
@@ -200,4 +199,4 @@
                                       (ui/read-template)))}])
           (log/warn "Configured listen port is: " port)
           (require 'ring.adapter.jetty)
-          ((eval 'ring.adapter.jetty/run-jetty) (logger/wrap-with-logger app) {:port port}))))))
+          ((eval 'ring.adapter.jetty/run-jetty) (logger/wrap-with-logger app) {:port port})))))
