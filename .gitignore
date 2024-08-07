@@ -1,6 +1,5 @@
 pom.xml
 *jar
-!opentelemetry-javaagent.jar
 lib
 classes
 *~
@@ -21,3 +20,5 @@ build/
 build.xml
 test2junit
 resources/
+.clj-kondo/
+.lsp/

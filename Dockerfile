@@ -1,16 +1,14 @@
-FROM clojure:openjdk-17-lein
+FROM clojure:temurin-22-lein-jammy
 
 WORKDIR /usr/src/app
 
-#RUN apk add --no-cache --update git nodejs-lts npm && \
-#    rm -rf /var/cache/apk
-RUN apt update && apt install -y nodejs npm
+RUN apt-get update && \
+    apt-get install -y git nodejs npm && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN npm install -g grunt-cli
 
-RUN ln -s "/usr/local/openjdk-17/bin/java" "/bin/kifshare"
-
-ENV OTEL_TRACES_EXPORTER none
+RUN ln -s "/opt/java/openjdk/bin/java" "/bin/kifshare"
 
 COPY project.clj /usr/src/app/
 RUN lein deps
@@ -26,7 +24,7 @@ COPY ui/ui.xml resources/
 RUN lein uberjar
 RUN cp target/kifshare-standalone.jar .
 
-ENTRYPOINT ["kifshare", "-Dlogback.configurationFile=/etc/iplant/de/logging/kifshare-logging.xml", "-javaagent:/usr/src/app/opentelemetry-javaagent.jar", "-Dotel.resource.attributes=service.name=kifshare", "-cp", ".:resources:kifshare-standalone.jar", "kifshare.core"]
+ENTRYPOINT ["kifshare", "-Dlogback.configurationFile=/etc/iplant/de/logging/kifshare-logging.xml", "-cp", ".:resources:kifshare-standalone.jar", "kifshare.core"]
 CMD ["--help"]
 
 ARG git_commit=unknown

@@ -5,19 +5,15 @@
          params
          keyword-params
          nested-params
-         multipart-params
-         stacktrace])
+         multipart-params])
   (:require [clojure-commons.file-utils :as ft]
             [clojure.tools.logging :as log]
             [compojure.route :as route]
-            [ring.logger :as logger]
             [ring.util.response :as resp]
             [ring.util.http-response :as http-resp]
             [kifshare.config :as cfg]
             [kifshare.tickets-controllers :as t-c]
             [kifshare.anon-controllers :as a-c]
-            [kifshare.amqp :as amqp]
-            [kifshare.events :as events]
             [kifshare.ui-template :as ui]
             [clojure.string :as string]
             [common-cli.core :as ccli]
@@ -153,8 +149,7 @@
       wrap-multipart-params
       wrap-keyword-params
       wrap-nested-params
-      wrap-params
-      wrap-stacktrace))
+      wrap-params))
 
 (def app
   (site-handler kifshare-routes))
@@ -171,32 +166,25 @@
   (or (:buffer-size opts)
       (* 1024 (Integer/parseInt (get @cfg/props "kifshare.app.download-buffer-size")))))
 
-(defn listen-for-events
-  []
-  (let [exchange-cfg (events/exchange-config)
-        queue-cfg    (events/queue-config)]
-    (amqp/connect exchange-cfg queue-cfg {"events.kifshare.ping" events/ping-handler})))
-
 (defn -main
   [& args]
-  
-    (let [{:keys [options]} (ccli/handle-args svc-info args cli-options)]
-      (when-not (fs/exists? (:config options))
-        (ccli/exit 1 (str "The config file does not exist.")))
-      (when-not (fs/readable? (:config options))
-        (ccli/exit 1 "The config file is not readable."))
-      (cfg/local-init (:config options))
-      (cfg/jargon-init)
-      (cfg/log-config)
-      (.start (Thread. listen-for-events))
-      (with-redefs [clojure.java.io/buffer-size override-buffer-size]
-        (let [port (Integer/parseInt (string/trim (get @cfg/props "kifshare.app.port")))]
-          (ui/read-template)
-          (hawk/watch! {:watcher :polling}
-                       [{:paths ["resources/ui.xml"]
-                         :handler (fn [ctx e]
-                                    (when (= (:kind e) :modify)
-                                      (ui/read-template)))}])
-          (log/warn "Configured listen port is: " port)
-          (require 'ring.adapter.jetty)
-          ((eval 'ring.adapter.jetty/run-jetty) (logger/wrap-with-logger app) {:port port})))))
+
+  (let [{:keys [options]} (ccli/handle-args svc-info args cli-options)]
+    (when-not (fs/exists? (:config options))
+      (ccli/exit 1 (str "The config file does not exist.")))
+    (when-not (fs/readable? (:config options))
+      (ccli/exit 1 "The config file is not readable."))
+    (cfg/local-init (:config options))
+    (cfg/jargon-init)
+    (cfg/log-config)
+    (with-redefs [clojure.java.io/buffer-size override-buffer-size]
+      (let [port (Integer/parseInt (string/trim (get @cfg/props "kifshare.app.port")))]
+        (ui/read-template)
+        (hawk/watch! {:watcher :polling}
+                     [{:paths ["resources/ui.xml"]
+                       :handler (fn [ctx e]
+                                  (when (= (:kind e) :modify)
+                                    (ui/read-template)))}])
+        (log/warn "Configured listen port is: " port)
+        (require 'ring.adapter.jetty)
+        ((eval 'ring.adapter.jetty/run-jetty) app {:port port})))))
