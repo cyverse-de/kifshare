@@ -14,8 +14,6 @@
             [kifshare.config :as cfg]
             [kifshare.tickets-controllers :as t-c]
             [kifshare.anon-controllers :as a-c]
-            [kifshare.amqp :as amqp]
-            [kifshare.events :as events]
             [kifshare.ui-template :as ui]
             [clojure.string :as string]
             [common-cli.core :as ccli]
@@ -168,12 +166,6 @@
   (or (:buffer-size opts)
       (* 1024 (Integer/parseInt (get @cfg/props "kifshare.app.download-buffer-size")))))
 
-(defn listen-for-events
-  []
-  (let [exchange-cfg (events/exchange-config)
-        queue-cfg    (events/queue-config)]
-    (amqp/connect exchange-cfg queue-cfg {"events.kifshare.ping" events/ping-handler})))
-
 (defn -main
   [& args]
 
@@ -185,7 +177,6 @@
     (cfg/local-init (:config options))
     (cfg/jargon-init)
     (cfg/log-config)
-    (.start (Thread. listen-for-events))
     (with-redefs [clojure.java.io/buffer-size override-buffer-size]
       (let [port (Integer/parseInt (string/trim (get @cfg/props "kifshare.app.port")))]
         (ui/read-template)

@@ -145,42 +145,6 @@
   []
   (or (get @props "kifshare.irods.anon-user") "anonymous"))
 
-(defn amqp-uri
-  []
-  (or (get @props "kifshare.amqp.uri") "amqp://guest:guest@rabbit:5672/"))
-
-(defn exchange-name
-  []
-  (or (get @props "kifshare.amqp.exchange.name") "de"))
-
-(defn exchange-durable?
-  []
-  (if-let [val (get @props "kifshare.amqp.exchange.durable")]
-    (boolean (Boolean/valueOf val))
-    true))
-
-(defn exchange-auto-delete?
-  []
-  (if-let [val (get @props "kifshare.amqp.exchange.auto-delete")]
-    (boolean (Boolean/valueOf val))
-    false))
-
-(defn queue-name
-  []
-  (or (get @props "kifshare.amqp.queue.name") "events.kifshare.queue"))
-
-(defn queue-durable?
-  []
-  (if-let [val (get @props "kifshare.amqp.queue.durable")]
-    (boolean (Boolean/valueOf val))
-    true))
-
-(defn queue-auto-delete?
-  []
-  (if-let [val (get @props "kifshare.amqp.queue.auto-delete")]
-    (boolean (Boolean/valueOf val))
-    false))
-
 (def jgcfg (atom nil))
 
 (defn jargon-config [] @jgcfg)

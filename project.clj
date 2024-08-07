@@ -30,8 +30,6 @@
                  [org.cyverse/debug-utils "2.9.0"]
                  [org.cyverse/clojure-commons "3.0.9"]
                  [org.cyverse/common-cli "2.8.2"]
-                 [org.cyverse/event-messages "0.0.1"]
-                 [com.novemberain/langohr "3.5.1"]
                  [me.raynes/fs "1.4.6"]
                  [cheshire "5.13.0"
                    :exclusions [[com.fasterxml.jackson.dataformat/jackson-dataformat-cbor]
