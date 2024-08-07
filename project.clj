@@ -50,8 +50,7 @@
   :ring {:init kifshare.config/init
          :handler kifshare.core/app}
 
-  :profiles {:dev     {:resource-paths ["build" "conf" "dev-resources"]
-                       :jvm-opts ["-Dotel.javaagent.enabled=false"]}
+  :profiles {:dev     {:resource-paths ["build" "conf" "dev-resources"]}
              :uberjar {:aot :all}}
 
   :plugins [[jonase/eastwood "1.4.3"]
@@ -60,6 +59,4 @@
             [test2junit "1.4.4"]]
 
   :main ^:skip-aot kifshare.core
-  :jvm-opts ["-Dlogback.configurationFile=/etc/iplant/de/logging/kifshare-logging.xml"
-             "-javaagent:./opentelemetry-javaagent.jar"
-             "-Dotel.resource.attributes=service.name=kifshare"])
+  :jvm-opts ["-Dlogback.configurationFile=/etc/iplant/de/logging/kifshare-logging.xml"])
