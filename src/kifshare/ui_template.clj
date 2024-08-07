@@ -1,7 +1,7 @@
 (ns kifshare.ui-template
   (:require [kifshare.config :as cfg]
-            [clostache.parser :as prs]
             [clojure.tools.logging :as log]
+            [clojure-commons.template :refer [render]]
             [cheshire.core :as json])
   (:import [org.apache.commons.io FileUtils]))
 
@@ -23,12 +23,12 @@
 (defn landing-page
   [ticket-id metadata-promise ticket-info]
   (log/debug "entered kifshare.ui-template/landing-page")
-  (prs/render @tmpl
-              (assoc ticket-info
-                     :metadata @metadata-promise
-                     :filesize (FileUtils/byteCountToDisplaySize
-                                (Long/parseLong (:filesize ticket-info)))
-                     :irods-url (cfg/irods-url)
-                     :de-url (cfg/de-url)
-                     :ticket-info-json (json/generate-string
-                                        (ui-ticket-info ticket-info)))))
+  (render @tmpl
+          (assoc ticket-info
+                 :metadata @metadata-promise
+                 :filesize (FileUtils/byteCountToDisplaySize
+                            (Long/parseLong (:filesize ticket-info)))
+                 :irods-url (cfg/irods-url)
+                 :de-url (cfg/de-url)
+                 :ticket-info-json (json/generate-string
+                                    (ui-ticket-info ticket-info)))))
