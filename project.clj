@@ -24,7 +24,7 @@
                  [hawk "0.2.11"]
                  [hiccup "1.0.2"]
                  [medley "1.4.0"]
-                 [org.cyverse/clj-jargon "3.1.1"
+                 [org.cyverse/clj-jargon "3.1.2"
                    :exclusions [[org.slf4j/slf4j-log4j12]
                                 [log4j]]]
                  [org.cyverse/debug-utils "2.9.0"]
