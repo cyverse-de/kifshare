@@ -24,7 +24,7 @@ COPY ui/ui.xml resources/
 RUN lein uberjar
 RUN cp target/kifshare-standalone.jar .
 
-ENTRYPOINT ["kifshare", "-Dlogback.configurationFile=/etc/iplant/de/logging/kifshare-logging.xml", "-cp", ".:resources:kifshare-standalone.jar", "kifshare.core"]
+ENTRYPOINT ["kifshare", "-Dlogback.configurationFile=/usr/src/app/logback.xml", "-cp", ".:resources:kifshare-standalone.jar", "kifshare.core"]
 CMD ["--help"]
 
 ARG git_commit=unknown
