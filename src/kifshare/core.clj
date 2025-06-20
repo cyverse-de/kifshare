@@ -110,6 +110,12 @@
     (GET ":filepath{.*}" [filepath :as req] (a-c/handle-get (collapse-slashes filepath) req))
     (OPTIONS ":filepath{.*}" [filepath] (a-c/handle-options (collapse-slashes filepath)))))
 
+(defn- dl-routes []
+  (context "/dl" []
+    (well-known-routes)
+    (resources-routes)
+    (ticket-routes)))
+
 (defroutes kifshare-routes
   (GET "/" [:as {{expecting :expecting} :params :as req}]
        (if (and expecting (not= expecting "kifshare"))
@@ -127,6 +133,9 @@
 
   ;; anonymous access
   (anon-files-routes)
+
+  ;; routes with the /dl routing prefix.
+  (dl-routes)
 
   (route/not-found "Not found!"))
 
