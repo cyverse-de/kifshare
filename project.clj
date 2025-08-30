@@ -17,31 +17,31 @@
   :manifest {"Git-Ref" ~(git-ref)}
   :uberjar-name "kifshare-standalone.jar"
 
-  :dependencies [[org.clojure/clojure "1.11.4"]
+  :dependencies [[org.clojure/clojure "1.12.2"]
                  [org.clojure/tools.logging "1.3.0"]
-                 [ch.qos.logback/logback-classic "1.5.6"]
-                 [net.logstash.logback/logstash-logback-encoder "8.0"]
+                 [ch.qos.logback/logback-classic "1.5.18"]
+                 [net.logstash.logback/logstash-logback-encoder "8.1"]
                  [hawk "0.2.11"]
-                 [hiccup "1.0.2"]
+                 [hiccup "2.0.0"]
                  [medley "1.4.0"]
-                 [org.cyverse/clj-jargon "3.1.2"
+                 [org.cyverse/clj-jargon "3.1.4"
                    :exclusions [[org.slf4j/slf4j-log4j12]
                                 [log4j]]]
                  [org.cyverse/debug-utils "2.9.0"]
-                 [org.cyverse/clojure-commons "3.0.9"]
+                 [org.cyverse/clojure-commons "3.0.11"]
                  [org.cyverse/common-cli "2.8.2"]
                  [me.raynes/fs "1.4.6"]
-                 [cheshire "5.13.0"
+                 [cheshire "6.0.0"
                    :exclusions [[com.fasterxml.jackson.dataformat/jackson-dataformat-cbor]
                                 [com.fasterxml.jackson.dataformat/jackson-dataformat-smile]
                                 [com.fasterxml.jackson.core/jackson-annotations]
                                 [com.fasterxml.jackson.core/jackson-databind]
                                 [com.fasterxml.jackson.core/jackson-core]]]
                  [slingshot "0.12.2"]
-                 [compojure "1.7.1"]
+                 [compojure "1.7.1" :exclusions [ring/ring-codec]]
                  [com.cemerick/url "0.1.1" :exclusions [com.cemerick/clojurescript.test]]
-                 [ring/ring-core "1.12.2"]
-                 [ring/ring-jetty-adapter "1.12.2"]]
+                 [ring/ring-core "1.14.2"]
+                 [ring/ring-jetty-adapter "1.14.2"]]
 
   :eastwood {:exclude-namespaces [:test-paths]
              :linters [:wrong-arity :wrong-ns-form :wrong-pre-post :wrong-tag :misplaced-docstrings]}
