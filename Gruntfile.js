@@ -14,20 +14,22 @@ module.exports = function(grunt) {
     },
 
     jslint: {
-      files: ['grunt.js', 'ui/src/js/kif.js', 'test/**/*.js'],
-      directives : {
-        predef: [
-          'document',
-          'jQuery',
-          '$',
-          'Mustache',
-          '_',
-          'alert',
-          'window'
-        ]
-      },
-      options: {
-        nomen: true
+      all: {
+        src: ['grunt.js', 'ui/src/js/kif.js', 'test/**/*.js'],
+        directives : {
+          predef: [
+            'document',
+            'jQuery',
+            '$',
+            'Mustache',
+            '_',
+            'alert',
+            'window'
+          ]
+        },
+        options: {
+          nomen: true
+        }
       }
     },
     qunit: {
@@ -140,10 +142,6 @@ module.exports = function(grunt) {
         }
       }
     },
-    watch: {
-      files: ["ui/src/js/*.js", "ui/src/css/*.less", "ui/src/img/*"],
-      tasks: ['build-resources-dev', 'copy:kifjs']
-    },
     jshint: {
       options: {
         curly: true,
@@ -177,7 +175,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.registerTask('default', ['jslint', 'qunit', 'concat', 'uglify']);
-  //grunt.loadNpmTasks('watch');
 
   grunt.registerTask('make-resources', ['shell:make_js_resources', 'shell:make_css_resources', 'shell:make_img_resources']);
   grunt.registerTask('build-resources', ['jslint', 'make-resources', 'less', 'copy', 'uglify']);

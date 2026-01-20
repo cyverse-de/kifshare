@@ -17,10 +17,10 @@
   :manifest {"Git-Ref" ~(git-ref)}
   :uberjar-name "kifshare-standalone.jar"
 
-  :dependencies [[org.clojure/clojure "1.12.2"]
-                 [org.clojure/tools.logging "1.3.0"]
-                 [ch.qos.logback/logback-classic "1.5.18"]
-                 [net.logstash.logback/logstash-logback-encoder "8.1"]
+  :dependencies [[org.clojure/clojure "1.12.4"]
+                 [org.clojure/tools.logging "1.3.1"]
+                 [ch.qos.logback/logback-classic "1.5.24"]
+                 [net.logstash.logback/logstash-logback-encoder "9.0"]
                  [hawk "0.2.11"]
                  [hiccup "2.0.0"]
                  [medley "1.4.0"]
@@ -31,17 +31,12 @@
                  [org.cyverse/clojure-commons "3.0.11"]
                  [org.cyverse/common-cli "2.8.2"]
                  [me.raynes/fs "1.4.6"]
-                 [cheshire "6.0.0"
-                   :exclusions [[com.fasterxml.jackson.dataformat/jackson-dataformat-cbor]
-                                [com.fasterxml.jackson.dataformat/jackson-dataformat-smile]
-                                [com.fasterxml.jackson.core/jackson-annotations]
-                                [com.fasterxml.jackson.core/jackson-databind]
-                                [com.fasterxml.jackson.core/jackson-core]]]
+                 [cheshire "6.1.0"]
                  [slingshot "0.12.2"]
-                 [compojure "1.7.1" :exclusions [ring/ring-codec]]
+                 [compojure "1.7.2" :exclusions [ring/ring-codec]]
                  [com.cemerick/url "0.1.1" :exclusions [com.cemerick/clojurescript.test]]
-                 [ring/ring-core "1.14.2"]
-                 [ring/ring-jetty-adapter "1.14.2"]]
+                 [ring/ring-core "1.15.3"]
+                 [ring/ring-jetty-adapter "1.15.3"]]
 
   :eastwood {:exclude-namespaces [:test-paths]
              :linters [:wrong-arity :wrong-ns-form :wrong-pre-post :wrong-tag :misplaced-docstrings]}

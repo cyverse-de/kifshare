@@ -34,13 +34,15 @@
     function htmlDecode(input) {
         var e = document.createElement('div');
         e.innerHTML = input;
-        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+        return e.childNodes.length === 0
+            ? ""
+            : e.childNodes[0].nodeValue;
     }
 
     function enableCopy(wrapperId, selectionId) {
         var wrapperElement = document.getElementById(wrapperId),
             selectionElement = document.getElementById(selectionId);
-        wrapperElement.addEventListener('click', function() {
+        wrapperElement.addEventListener('click', function () {
             selectionElement.select();
             document.execCommand('copy');
         });
