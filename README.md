@@ -7,34 +7,20 @@ A simple web page that allows users to download publicly available files without
 * iRODS 3.1 or later - http://irods.org
 * Leiningen 2 - http://leiningen.org
 * Node.js - http://nodejs.org/
-* Grunt - http://gruntjs.com/
-* LESS - http://lesscss.org/
 
-On OS X, you'll also want homebrew installed to help with getting Node.js and Grunt up and running. It'll help you stay sane. Once homebrew is installed, do the following on the command-line:
+On OS X, you can install Node via homebrew:
 
-    brew install node.js
-    <add npm to your $PATH as instructed>
+    brew install node
 
 You'll need an iRODS install that's of version 3.1 or later. It doesn't need to live on the same box as kifshare, but kifshare will need to be able to connect to it.
 
 You'll need Leiningen 2 installed as well. See http://leiningen.org for more details.
 
-Once all of the above is downloaded, installed, and configured, go into the projects top directory (the one containing package.json) and run the following:
+Once all of the above is downloaded, installed, and configured, go into the project's top directory (the one containing package.json) and run the following:
 
-    npm install
+    npm ci
 
-That should download and install the development dependencies. If you have trouble running grunt or lesscss after this, try the following:
-
-    npm install -g grunt-cli
-    npm install -g less
-
-Again, only do that if the bare 'npm install' doesn't work.
-
-# Upgrading to Grunt 0.4.X
-
-We're now using Grunt 0.4.X for Kifshare, so you'll want to upgrade if you can. Upgrade instructions are available here:
-
-    http://gruntjs.com/getting-started#grunt-0.3-notes
+That installs the development dependencies (eslint, less).
 
 # Configuring Kifshare For Development
 
@@ -60,31 +46,23 @@ Another potential issue is the "DefaultType" setting in /etc/httpd/conf/httpd.co
 
 # Building Kifshare For Development
 
-You'll build kifshare with Grunt. Grunt, in turn, calls Leiningen when necessary.
+The front-end assets are built with npm; the Clojure side is built with Leiningen.
 
-If you're only working on the Clojure portion of the code, then you only need to call this to build the resources directory:
+If you're only working on the Clojure portion of the code, you can build the resources directory with:
 
-    grunt build-resources
+    npm run build
 
-Then you can use Leiningen as you normally would.
+That runs ESLint, compiles `kif.less`, and copies static assets into `resources/`. Then use Leiningen as normal:
 
-If you want to do a build of both the front-end and the clojure code:
+    lein uberjar
 
-    grunt build-all
+To clean the resources directory:
 
-If you want to clean everything (including resources):
+    npm run clean
 
-    grunt clean-all
+To clean Leiningen output:
 
-If you only want to clean the resources directory:
-
-    grunt shell:clean_resources
-
-The following commands are also included:
-
-    grunt shell:lein_clean
-    grunt shell:lein_deps
-    grunt shell:lein_uberjar
+    lein clean
 
 # Running Kifshare
 

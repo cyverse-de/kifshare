@@ -3,14 +3,16 @@
   "version": "0.1.0",
   "author": "wregglej@iplantcollaborative.org",
   "description": "Public file download application.",
+  "scripts": {
+    "lint": "eslint ui/src/js/kif.js",
+    "build": "npm run lint && ./scripts/build.sh",
+    "clean": "rm -rf resources"
+  },
   "dependencies": {},
   "devDependencies": {
-    "grunt": "~1.6.2",
     "less": "~4.6",
-    "grunt-contrib-less": "~3.0",
-    "grunt-contrib-copy": "~1.0",
-    "grunt-contrib-uglify": "~5.2.2",
-    "grunt-jslint": "~1.2.0",
-    "grunt-shell": "~4.0.0"
+    "eslint": "^9.22.0",
+    "@eslint/js": "^9.22.0",
+    "globals": "~15.15.0"
   }
 }

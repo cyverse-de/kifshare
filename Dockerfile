@@ -1,30 +1,32 @@
-FROM clojure:temurin-22-lein-jammy
+# --- Builder stage: Clojure + Node toolchain ---
+FROM clojure:temurin-25-lein-trixie AS builder
 
 WORKDIR /usr/src/app
 
 RUN apt-get update && \
-    apt-get install -y git nodejs npm && \
+    apt-get install -y --no-install-recommends nodejs npm git && \
     rm -rf /var/lib/apt/lists/*
 
-RUN npm install -g grunt-cli
+COPY project.clj package.json package-lock.json ./
+RUN lein deps && npm ci
 
-RUN ln -s "/opt/java/openjdk/bin/java" "/bin/kifshare"
+COPY . .
 
-COPY project.clj /usr/src/app/
-RUN lein deps
+RUN npm run build && lein uberjar
 
-COPY conf/main/logback.xml /usr/src/app/
-COPY . /usr/src/app
+# --- Runtime stage: distroless Java 25 ---
+FROM gcr.io/distroless/java25-debian13:nonroot
 
-RUN npm install
-RUN grunt build-resources
-COPY ui/fa resources/
-COPY ui/src resources/
-COPY ui/ui.xml resources/
-RUN lein uberjar
-RUN cp target/kifshare-standalone.jar .
+WORKDIR /app
 
-ENTRYPOINT ["kifshare", "-Dlogback.configurationFile=/usr/src/app/logback.xml", "-cp", ".:resources:kifshare-standalone.jar", "kifshare.core"]
+COPY --from=builder /usr/src/app/target/kifshare-standalone.jar /app/kifshare-standalone.jar
+COPY --from=builder /usr/src/app/resources /app/resources
+COPY --from=builder /usr/src/app/conf/main/logback.xml /app/logback.xml
+
+ENTRYPOINT ["java", \
+            "-Dlogback.configurationFile=/app/logback.xml", \
+            "-cp", "/app:/app/resources:/app/kifshare-standalone.jar", \
+            "kifshare.core"]
 CMD ["--help"]
 
 ARG git_commit=unknown
