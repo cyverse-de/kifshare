@@ -1,4 +1,4 @@
-(use '[clojure.java.shell :only (sh)])
+(require '[clojure.java.shell :refer (sh)])
 (require '[clojure.string :as string])
 
 (defn git-ref
@@ -19,12 +19,12 @@
 
   :dependencies [[org.clojure/clojure "1.12.5"]
                  [org.clojure/tools.logging "1.3.1"]
-                 [ch.qos.logback/logback-classic "1.5.32"]
+                 [ch.qos.logback/logback-classic "1.5.34"]
                  [net.logstash.logback/logstash-logback-encoder "9.0"]
                  [hawk "0.2.11"]
                  [hiccup "2.0.0"]
                  [medley "1.4.0"]
-                 [org.cyverse/clj-jargon "3.1.4"
+                 [org.cyverse/clj-jargon "3.1.5"
                    :exclusions [[org.slf4j/slf4j-log4j12]
                                 [log4j]]]
                  [org.cyverse/debug-utils "2.9.0"]
