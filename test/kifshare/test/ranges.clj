@@ -40,3 +40,36 @@
     (let [resp (ranges/non-range-resp "body" "Müller.txt" "/zone/home/user/Müller.txt" 456 789 :attachment true)]
       (is (= "attachment; filename=\"M_ller.txt\"; filename*=UTF-8''M%C3%BCller.txt"
              (get-in resp [:headers "Content-Disposition"]))))))
+
+(deftest test-url-encode-path
+  (testing "percent-encodes path segments as UTF-8 while preserving slashes"
+    (are [path expected] (= expected (ranges/url-encode-path path))
+
+      ;; plain ASCII paths are unchanged
+      "/zone/home/file.txt" "/zone/home/file.txt"
+
+      ;; Latin-1 and beyond-Latin-1 segments are UTF-8 percent-encoded
+      "/zone/home/user/Müller.txt" "/zone/home/user/M%C3%BCller.txt"
+      "/data/Łódź.txt"             "/data/%C5%81%C3%B3d%C5%BA.txt"
+
+      ;; spaces become %20 (not '+'), and URL-significant characters are escaped
+      "/a b/c.txt"   "/a%20b/c.txt"
+      "/a#b/c?d.txt" "/a%23b/c%3Fd.txt"
+
+      ;; leading and trailing slashes are preserved
+      "/foo/bar/" "/foo/bar/"
+
+      ;; the relative redirect target shape is encoded without mangling '..' or separators
+      "../d/abc123/Müller.txt" "../d/abc123/M%C3%BCller.txt")))
+
+(deftest test-non-range-resp-encodes-content-location
+  (testing "non-range-resp emits a URL-encoded Content-Location"
+    (let [resp (ranges/non-range-resp "body" "Müller.txt" "/zone/home/user/Müller.txt" 456 789 :attachment true)]
+      (is (= "/zone/home/user/M%C3%BCller.txt"
+             (get-in resp [:headers "Content-Location"]))))))
+
+(deftest test-range-resp-encodes-content-location
+  (testing "range-resp emits a URL-encoded Content-Location"
+    (let [resp (ranges/range-resp "body" "/zone/home/user/Müller.txt" 456 789 0 99)]
+      (is (= "/zone/home/user/M%C3%BCller.txt"
+             (get-in resp [:headers "Content-Location"]))))))

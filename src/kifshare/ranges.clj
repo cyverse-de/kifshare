@@ -1,8 +1,19 @@
 (ns kifshare.ranges
-  (:require [clojure.tools.logging :as log]
+  (:require [clojure.string :as string]
+            [clojure.tools.logging :as log]
             [clj-jargon.item-info :as info]
             [kifshare.inputs :refer [chunk-stream]])
-  (:import [java.nio.charset StandardCharsets]))
+  (:import [java.net URLEncoder]
+           [java.nio.charset StandardCharsets]))
+
+(defn url-encode-path
+  "Percent-encodes a URL path while preserving '/' separators, using UTF-8. Suitable for
+   header values such as Content-Location and a redirect Location, which must be valid URI
+   references rather than raw filesystem paths."
+  [path]
+  (->> (string/split path #"/" -1)
+       (map #(-> (URLEncoder/encode ^String % "UTF-8") (string/replace "+" "%20")))
+       (string/join "/")))
 
 (def ^:private rfc5987-attr-chars
   "Characters RFC 5987 permits unencoded in an ext-value (the attr-char production)."
@@ -107,7 +118,7 @@
    "ETag"             (str "W/" lastmod)
    "Expires"          "0"
    "Vary"             "*"
-   "Content-Location" filepath})
+   "Content-Location" (url-encode-path filepath)})
 
 (defn non-range-resp
   [body filename filepath lastmod filesize & {:keys [attachment] :or {attachment false}}]
