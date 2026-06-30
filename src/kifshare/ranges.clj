@@ -1,7 +1,46 @@
 (ns kifshare.ranges
   (:require [clojure.tools.logging :as log]
             [clj-jargon.item-info :as info]
-            [kifshare.inputs :refer [chunk-stream]]))
+            [kifshare.inputs :refer [chunk-stream]])
+  (:import [java.nio.charset StandardCharsets]))
+
+(def ^:private rfc5987-attr-chars
+  "Characters RFC 5987 permits unencoded in an ext-value (the attr-char production)."
+  (set "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#$&+-.^_`|~"))
+
+(defn- rfc5987-encode
+  "Percent-encodes a string as an RFC 5987 ext-value, using UTF-8."
+  [^String s]
+  (->> (.getBytes s StandardCharsets/UTF_8)
+       (map (fn [b]
+              (let [octet (bit-and b 0xff)
+                    c     (char octet)]
+                (if (contains? rfc5987-attr-chars c)
+                  c
+                  (format "%%%02X" octet)))))
+       (apply str)))
+
+(defn- ascii-fallback
+  "Builds an ASCII-only fallback filename safe for a quoted-string parameter. Non-ASCII,
+   control, quote, and backslash characters are replaced with '_' so they cannot corrupt
+   the header or, after Jetty's ISO-8859-1 down-encoding, the suggested filename."
+  [filename]
+  (apply str
+         (map (fn [c]
+                (let [n (int c)]
+                  (if (and (>= n 32) (< n 127) (not (#{\" \\} c)))
+                    c
+                    \_)))
+              filename)))
+
+(defn content-disposition
+  "Builds an RFC 6266 Content-Disposition header value. Emits both an ASCII fallback
+   filename and a UTF-8 filename* parameter so browsers handle non-ASCII filenames
+   correctly rather than receiving a corrupted name from Jetty's header encoding."
+  [filename & {:keys [attachment] :or {attachment false}}]
+  (str (when attachment "attachment; ")
+       "filename=\"" (ascii-fallback filename) "\""
+       "; filename*=UTF-8''" (rfc5987-encode filename)))
 
 (defn range-request?
   [ring-request]
@@ -46,7 +85,7 @@
   [filename filesize]
   {:status  200
    :headers {"Content-Length"      (str filesize)
-             "Content-Disposition" (str "filename=\"" filename "\"")
+             "Content-Disposition" (content-disposition filename)
              "Accept-Ranges"       "bytes"}})
 
 (defn options-resp
@@ -76,7 +115,7 @@
    :body    body
    :headers (assoc (base-headers filepath lastmod)
                    "Content-Length"      (str filesize)
-                   "Content-Disposition" (str (if attachment "attachment; " "") "filename=\"" filename "\""))})
+                   "Content-Disposition" (content-disposition filename :attachment attachment))})
 
 (defn range-resp
   [body filepath lastmod filesize start-byte end-byte]
