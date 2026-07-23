@@ -1,6 +1,6 @@
 <html lang="en" xml:lang="en" xmlns= "http://www.w3.org/1999/xhtml">
   <head>
-    <title>{{{filename}}}</title>
+    <title>{{filename}}</title>
 
     <meta charset="UTF-8">
     <meta name="google" content="notranslate">
@@ -15,26 +15,26 @@
 
   <body>
     <span id="ticket-info" style="display: none">
-      <div id="ticket-info-map">{{{ticket-info-json}}}</div>
+      <div id="ticket-info-map">{{ticket-info-json}}</div>
     </span>
 
     <div id="menu">
       <ul>
         <li>
           <div id="logo-container">
-            <a href="{{{de-url}}}">
+            <a href="{{de-url}}">
               <img id="logo" src="resources/img/cyverse-logo-small.png">
             </a>
           </div>
         </li>
         <li>
           <div>
-            <h1 id="filename" title="{{{filename}}}">{{{filename}}}</h1>
+            <h1 id="filename" title="{{filename}}">{{filename}}</h1>
           </div>
         </li>
         <li>
           <div id="menu-download-button-display">
-            <a href="d/{{ticket-id}}/{{filename}}">
+            <a href="{{download-path}}">
               <div id="download-link-area" data-balloon="Download the file." data-balloon-pos="left">
                 <i class="fa fa-download"></i>
               </div>
@@ -49,7 +49,7 @@
         <h2>Download</h2>
       </div>
 
-      <a href="d/{{ticket-id}}/{{filename}}">
+      <a href="{{download-path}}">
         <div id="download-button-display" data-balloon="Download the file." data-balloon-pos="down" class="grid_12">
           <i class="fa fa-download fa-5x"></i>
         </div>
@@ -66,7 +66,7 @@
       </div>
 
       <div id="lastmod" class="grid_9 detail">
-        {{{lastmod}}}
+        {{lastmod}}
       </div>
 
       <div id="size-label" class="grid_3 label">
@@ -74,7 +74,7 @@
       </div>
 
       <div id="size" class="grid_9 detail">
-        {{{filesize}}}
+        {{filesize}}
       </div>
 
       <div class="section-spacer"></div>
@@ -86,7 +86,7 @@
       <div id="irods-instructions-label" class="grid_3 label">
         <h2>
           iRODS icommands
-          <a href="{{{irods-url}}}" data-balloon="iRODS icommands documentation." data-balloon-pos="up">
+          <a href="{{irods-url}}" data-balloon="iRODS icommands documentation." data-balloon-pos="up">
             <i class="fa fa-question-circle fa-1"></i>
           </a>
         </h2>
