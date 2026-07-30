@@ -1,7 +1,57 @@
 (ns kifshare.ranges
-  (:require [clojure.tools.logging :as log]
+  (:require [clojure.string :as string]
+            [clojure.tools.logging :as log]
             [clj-jargon.item-info :as info]
-            [kifshare.inputs :refer [chunk-stream]]))
+            [kifshare.inputs :refer [chunk-stream]])
+  (:import [java.net URLEncoder]
+           [java.nio.charset StandardCharsets]))
+
+(defn url-encode-path
+  "Percent-encodes a URL path while preserving '/' separators, using UTF-8. Suitable for
+   header values such as Content-Location and a redirect Location, which must be valid URI
+   references rather than raw filesystem paths."
+  [path]
+  (->> (string/split path #"/" -1)
+       (map #(-> (URLEncoder/encode ^String % "UTF-8") (string/replace "+" "%20")))
+       (string/join "/")))
+
+(def ^:private rfc5987-attr-chars
+  "Characters RFC 5987 permits unencoded in an ext-value (the attr-char production)."
+  (set "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#$&+-.^_`|~"))
+
+(defn- rfc5987-encode
+  "Percent-encodes a string as an RFC 5987 ext-value, using UTF-8."
+  [^String s]
+  (->> (.getBytes s StandardCharsets/UTF_8)
+       (map (fn [b]
+              (let [octet (bit-and b 0xff)
+                    c     (char octet)]
+                (if (contains? rfc5987-attr-chars c)
+                  c
+                  (format "%%%02X" octet)))))
+       (apply str)))
+
+(defn- ascii-fallback
+  "Builds an ASCII-only fallback filename safe for a quoted-string parameter. Non-ASCII,
+   control, quote, and backslash characters are replaced with '_' so they cannot corrupt
+   the header or, after Jetty's ISO-8859-1 down-encoding, the suggested filename."
+  [filename]
+  (apply str
+         (map (fn [c]
+                (let [n (int c)]
+                  (if (and (>= n 32) (< n 127) (not (#{\" \\} c)))
+                    c
+                    \_)))
+              filename)))
+
+(defn content-disposition
+  "Builds an RFC 6266 Content-Disposition header value. Emits both an ASCII fallback
+   filename and a UTF-8 filename* parameter so browsers handle non-ASCII filenames
+   correctly rather than receiving a corrupted name from Jetty's header encoding."
+  [filename & {:keys [attachment] :or {attachment false}}]
+  (str (when attachment "attachment; ")
+       "filename=\"" (ascii-fallback filename) "\""
+       "; filename*=UTF-8''" (rfc5987-encode filename)))
 
 (defn range-request?
   [ring-request]
@@ -46,7 +96,7 @@
   [filename filesize]
   {:status  200
    :headers {"Content-Length"      (str filesize)
-             "Content-Disposition" (str "filename=\"" filename "\"")
+             "Content-Disposition" (content-disposition filename)
              "Accept-Ranges"       "bytes"}})
 
 (defn options-resp
@@ -68,7 +118,7 @@
    "ETag"             (str "W/" lastmod)
    "Expires"          "0"
    "Vary"             "*"
-   "Content-Location" filepath})
+   "Content-Location" (url-encode-path filepath)})
 
 (defn non-range-resp
   [body filename filepath lastmod filesize & {:keys [attachment] :or {attachment false}}]
@@ -76,7 +126,7 @@
    :body    body
    :headers (assoc (base-headers filepath lastmod)
                    "Content-Length"      (str filesize)
-                   "Content-Disposition" (str (if attachment "attachment; " "") "filename=\"" filename "\""))})
+                   "Content-Disposition" (content-disposition filename :attachment attachment))})
 
 (defn range-resp
   [body filepath lastmod filesize start-byte end-byte]

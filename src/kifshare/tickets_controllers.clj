@@ -18,8 +18,8 @@
   (log/debug "kifshare.controllers/object-metadata")
 
   (future (filterv
-   #(not= (:unit %1) "ipc-system-avu")
-   (jmeta/get-metadata cm abspath))))
+           #(not= (:unit %1) "ipc-system-avu")
+           (jmeta/get-metadata cm abspath))))
 
 (defn show-landing-page
   "Handles error checking and decides whether to show the
@@ -70,20 +70,20 @@
   (log/debug "entered page kifshare.controllers/download-file")
 
   (try+
-    (log/info "Downloading " ticket-id " as " filename)
-    (if (and (ranges/range-request? ring-request) (ranges/valid-range? ring-request))
-      (jinit/with-jargon (jargon-config) :auto-close false [cm]
-        (download-range cm ticket-id ring-request))
-      (jinit/with-jargon (jargon-config) :auto-close false [cm]
-        (tickets/download cm ticket-id)))
+   (log/info "Downloading " ticket-id " as " filename)
+   (if (and (ranges/range-request? ring-request) (ranges/valid-range? ring-request))
+     (jinit/with-jargon (jargon-config) :auto-close false [cm]
+       (download-range cm ticket-id ring-request))
+     (jinit/with-jargon (jargon-config) :auto-close false [cm]
+       (tickets/download cm ticket-id)))
 
-    (catch error? err
-      (log/error (format-exception (:throwable &throw-context)))
-      (error-map-response ring-request err))
+   (catch error? err
+     (log/error (format-exception (:throwable &throw-context)))
+     (error-map-response ring-request err))
 
-    (catch Exception _
-      (log/error (format-exception (:throwable &throw-context)))
-      {:status 500 :body (cheshire/encode (unchecked &throw-context))})))
+   (catch Exception _
+     (log/error (format-exception (:throwable &throw-context)))
+     {:status 500 :body (cheshire/encode (unchecked &throw-context))})))
 
 (defn download-ticket
   "Redirects the caller to the endpoint that allows them to download a ticket."
@@ -94,7 +94,7 @@
    (jinit/with-jargon (jargon-config) [cm]
      (let [ticket-info (tickets/ticket-info cm ticket-id)]
        (log/warn "Redirecting download for " ticket-id " to the /d/:ticket-id/:filename page.")
-       (redirect (str "../d/" ticket-id "/" (:filename ticket-info)))))
+       (redirect (ranges/url-encode-path (str "../d/" ticket-id "/" (:filename ticket-info))))))
 
    (catch error? err
      (log/error (format-exception (:throwable &throw-context)))

@@ -25,8 +25,8 @@
                  [hiccup "2.0.0"]
                  [medley "1.4.0"]
                  [org.cyverse/clj-jargon "3.1.5"
-                   :exclusions [[org.slf4j/slf4j-log4j12]
-                                [log4j]]]
+                  :exclusions [[org.slf4j/slf4j-log4j12]
+                               [log4j]]]
                  [org.cyverse/debug-utils "2.9.0"]
                  [org.cyverse/clojure-commons "3.0.12"]
                  [org.cyverse/common-cli "2.8.2"]
@@ -34,6 +34,7 @@
                  [cheshire "6.2.0"]
                  [slingshot "0.12.2"]
                  [compojure "1.7.2" :exclusions [ring/ring-codec]]
+                 [stencil "0.5.0"]
                  [com.cemerick/url "0.1.1" :exclusions [com.cemerick/clojurescript.test]]
                  [ring/ring-core "1.15.4"]
                  [ring/ring-jetty-adapter "1.15.4"]]
