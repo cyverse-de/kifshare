@@ -49,7 +49,7 @@
              :uberjar {:aot :all}}
 
   :plugins [[jonase/eastwood "1.4.3"]
-            [lein-ancient "0.7.0"]
+            [lein-ancient "1.0.0"]
             [lein-ring "0.12.6"]
             [test2junit "1.4.4"]]
 
